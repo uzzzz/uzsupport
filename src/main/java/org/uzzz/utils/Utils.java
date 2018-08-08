@@ -1,11 +1,13 @@
 package org.uzzz.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -21,57 +23,70 @@ import org.jsoup.select.Elements;
 
 public class Utils {
 
+	private static String Path = "E:\\workspace\\uzzzz.github.io";
+
+	// private static String Path = "E:\\workspace\\uz3.github.io";
+
 	public static String blockchain() throws IOException {
 
 		long start = System.currentTimeMillis();
 
 		String url = "https://www.csdn.net/nav/blockchain";
 		Connection conn = Jsoup.connect(url);
-		conn.header("Cookie", "uuid_tt_dd=8305037545317967273_20181022;");
+		conn.header("Cookie", "uuid_tt_dd=8305037545317967274_20171022;");
 		Document doc = conn.get();
 
 		Elements elements = doc.select("#feedlist_id li[data-type=blog]");
 
 		for (Element e : elements) {
-			Element a = e.select(".title a").first();
-			String title = a.text();
-			String _url = a.attr("href");
-			Document _doc = Jsoup.connect(_url).get();
-			String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
-			String c = _doc.select("article").html();
-
 			try {
-				c = URLEncoder.encode(c, "UTF-8");
-				c = "{{ \"" + c + "\" | url_decode}}";
-			} catch (UnsupportedEncodingException ee) {
-				c = "{% raw %} \n" + c + "\n{% endraw %}";
+				Element a = e.select(".title a").first();
+				String title = a.text();
+				String _url = a.attr("href");
+				Document _doc = Jsoup.connect(_url).get();
+				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
+				String c = _doc.select("article").html();
+
+				try {
+					c = URLEncoder.encode(c, "UTF-8");
+					c = "{{ \"" + c + "\" | url_decode}}";
+				} catch (UnsupportedEncodingException ee) {
+					c = "{% raw %} \n" + c + "\n{% endraw %}";
+				}
+
+				String content = "---\n" //
+						+ "layout: default\n" //
+						+ "title: " + title + "\n" //
+						+ "---\n\n" //
+						+ c;
+
+				String path = Path + "\\_posts\\";
+
+				String clearTitle = SecurityUtil.signatureByMD5(title).toLowerCase() + ".html";
+
+				BufferedWriter writer = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(path + time + "-" + clearTitle, false), "UTF-8"));
+				writer.write(content);
+				writer.close();
+
+				String sitemap = Path + "\\sitemap.txt";
+				String[] s = time.split("-");
+				BufferedWriter writer2 = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(sitemap, true), "UTF-8"));
+				writer2.write("\nhttps://uzzz.org/" + s[0] + "/" + s[1] + "/" + s[2] + "/" + clearTitle);
+				writer2.close();
+			} catch (IOException ioe) {
 			}
-
-			String content = "---\n" //
-					+ "layout: default\n" //
-					+ "title: " + title + "\n" //
-					+ "---\n\n" //
-					+ c;
-
-			String path = "E:\\workspace\\uzzzz.github.io\\_posts\\";
-
-			String clearTitle = SecurityUtil.signatureByMD5(title).toLowerCase() + ".html";
-
-			FileWriter writer = new FileWriter(path + time + "-" + clearTitle);
-			writer.write(content);
-			writer.close();
-
-			String sitemap = "E:\\workspace\\uzzzz.github.io\\sitemap.txt";
-			String[] s = time.split("-");
-			FileWriter writer2 = new FileWriter(sitemap, true);
-			writer2.write("\nhttps://uzzz.org/" + s[0] + "/" + s[1] + "/" + s[2] + "/" + clearTitle);
-			writer2.close();
-
 		}
 
 		long end = System.currentTimeMillis();
 
-		String git = git();
+		String git;
+		try {
+			git = git();
+		} catch (IOException ee) {
+			git = ee.getMessage();
+		}
 
 		return "crawler OK:" + (end - start) + "ms<br />" + git;
 	}
@@ -91,7 +106,7 @@ public class Utils {
 		 * </pre>
 		 */
 
-		File dir = new File("E:\\\\workspace\\\\uzzzz.github.io");
+		File dir = new File(Path);
 		String[] cmd = new String[] { "cmd", "/c",
 				"git add . && git commit -a -m \"crawler\" && git pull && git push origin master" };
 		Process process = Runtime.getRuntime().exec(cmd, null, dir);
