@@ -87,13 +87,6 @@ public class Crawler {
 				writer.write(content);
 				writer.close();
 
-				String sitemap = Path + "\\sitemap.txt";
-				String[] s = time.split("-");
-				BufferedWriter writer2 = new BufferedWriter(
-						new OutputStreamWriter(new FileOutputStream(sitemap, true), "UTF-8"));
-				writer2.write("\nhttps://uzzz.org/" + s[0] + "/" + s[1] + "/" + s[2] + "/" + clearTitle);
-				writer2.close();
-
 			} catch (IOException ioe) {
 			}
 		}
