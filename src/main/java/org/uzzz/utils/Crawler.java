@@ -21,6 +21,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -32,9 +33,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class Crawler {
 
-	private String Path = "E:\\workspace\\uzzzz.github.io";
-
-	// private static String Path = "E:\\workspace\\uz3.github.io";
+	@Value("${uzzz.path}")
+	private String uzzzPath;
 
 	@Autowired
 	private RestTemplate rest;
@@ -78,7 +78,7 @@ public class Crawler {
 						+ "---\n\n" //
 						+ c;
 
-				String path = Path + "\\_posts\\";
+				String path = uzzzPath + "/_posts/";
 
 				String clearTitle = SecurityUtil.signatureByMD5(title).toLowerCase() + ".html";
 
@@ -149,8 +149,8 @@ public class Crawler {
 		 * </pre>
 		 */
 
-		File dir = new File(Path);
-		String[] cmd = new String[] { "cmd", "/c",
+		File dir = new File(uzzzPath);
+		String[] cmd = new String[] { "/bin/sh", "-c",
 				"git add . && git commit -a -m \"crawler\" && git pull && git push origin master" };
 		Process process = Runtime.getRuntime().exec(cmd, null, dir);
 
