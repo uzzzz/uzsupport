@@ -11,9 +11,6 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -57,7 +54,7 @@ public class Crawler {
 				String _url = a.attr("href");
 				Document _doc = Jsoup.connect(_url).get();
 				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
-				
+
 				Elements article = _doc.select("article");
 				article.select("img").stream().parallel().forEach(element -> {
 					String src = element.absUrl("src");
@@ -125,21 +122,7 @@ public class Crawler {
 		// 执行HTTP请求
 		long id = rest.postForObject("https://blog.uzzz.org/api/post", requestEntity, Long.class);
 
-		// post baidu
-		postBaiduForBlog(id);
-		return "OK";
-	}
-
-	private void postBaiduForBlog(long id) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.TEXT_PLAIN);
-		String content = "https://blog.uzzz.org/view/" + id;
-		HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
-		// 执行HTTP请求
-		String ret = rest.postForObject(
-				"http://data.zz.baidu.com/urls?site=https://blog.uzzz.org&token=pJ67TFnK02hkMHlt", requestEntity,
-				String.class);
-		System.out.println("post baidu : " + ret + " (" + content + ")");
+		return "OK:" + id;
 	}
 
 	public String git() throws IOException {
@@ -190,24 +173,4 @@ public class Crawler {
 		return "git OK:" + (end - start) + "ms<br />success:" + resStr.toString() + "<br />" + errorStr;
 	}
 
-	public static String getMatcher(String regex, String source) {
-		Pattern pattern = Pattern.compile(regex); // 匹配规则
-		Matcher matcher = pattern.matcher(source); // 这个是被测试的内容
-		return matcher.find() ? matcher.group(1) : "";
-	}
-
-	public static <T> T tryGet(Supplier<T> action, T defaultValue) {
-		try {
-			return action.get();
-		} catch (Exception e) {
-			return defaultValue;
-		}
-	}
-
-	public static void tryCatch(Runnable action) {
-		try {
-			action.run();
-		} catch (Exception e) {
-		}
-	}
 }
