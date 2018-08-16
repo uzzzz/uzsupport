@@ -45,7 +45,7 @@ public class Crawler {
 
 		String url = "https://www.csdn.net/nav/blockchain";
 		Connection conn = Jsoup.connect(url);
-		conn.header("Cookie", "uuid_tt_dd=8305037545317967274_20171022;");
+		conn.header("Cookie", "uuid_tt_dd=83050375453151967274_20161022;");
 		Document doc = conn.get();
 
 		Elements elements = doc.select("#feedlist_id li[data-type=blog]");
@@ -57,6 +57,12 @@ public class Crawler {
 				String _url = a.attr("href");
 				Document _doc = Jsoup.connect(_url).get();
 				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
+				_doc.select("img").stream().parallel().forEach(element -> {
+					String src = element.absUrl("src");
+					if (src != null && src.startsWith("https://img-blog.csdn.net")) {
+						element.attr("src", "https://blog.uzzz.org/_p?" + src);
+					}
+				});
 				String c = _doc.select("article").html();
 
 				try { // post uzzzblog
