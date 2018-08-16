@@ -57,13 +57,15 @@ public class Crawler {
 				String _url = a.attr("href");
 				Document _doc = Jsoup.connect(_url).get();
 				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
-				_doc.select("img").stream().parallel().forEach(element -> {
+				
+				Elements article = _doc.select("article");
+				article.select("img").stream().parallel().forEach(element -> {
 					String src = element.absUrl("src");
 					if (src != null && src.startsWith("https://img-blog.csdn.net")) {
 						element.attr("src", "https://blog.uzzz.org/_p?" + src);
 					}
 				});
-				String c = _doc.select("article").html();
+				String c = article.html();
 
 				try { // post uzzzblog
 					postBlog(title, c);
