@@ -28,15 +28,22 @@ public class AsyncTask {
 		return taskExecutor;
 	}
 
+	private int random(int min, int max) {
+		int s = (int) min + (int) (Math.random() * (max - min));
+		return s;
+	}
+
 	@Async
 	public void postBlog(String title, String content) {
 		try {
+			int uid = random(2, 24);
 			HttpHeaders headers = new HttpHeaders();
 			// 请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
 			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 			// 封装参数，千万不要替换为Map与HashMap，否则参数无法传递
 			MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 			// 也支持中文
+			params.add("uid", String.valueOf(uid));
 			params.add("title", title);
 			params.add("content", content);
 			HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(
