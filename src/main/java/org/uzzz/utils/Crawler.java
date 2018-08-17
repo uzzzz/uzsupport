@@ -19,13 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 @Component
 public class Crawler {
@@ -34,7 +28,7 @@ public class Crawler {
 	private String uzzzPath;
 
 	@Autowired
-	private RestTemplate rest;
+	private AsyncTask task;
 
 	public String blockchain() throws IOException {
 
@@ -64,11 +58,8 @@ public class Crawler {
 				});
 				String c = article.html();
 
-				try { // post uzzzblog
-					postBlog(title, c);
-				} catch (Exception ee) {
-					ee.printStackTrace();
-				}
+				// post uzzzblog
+				task.postBlog(title, c);
 
 				try {
 					c = URLEncoder.encode(c, "UTF-8");
@@ -106,23 +97,6 @@ public class Crawler {
 		}
 
 		return "crawler OK:" + (end - start) + "ms<br />" + git;
-	}
-
-	public String postBlog(String title, String content) {
-		HttpHeaders headers = new HttpHeaders();
-		// 请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		// 封装参数，千万不要替换为Map与HashMap，否则参数无法传递
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		// 也支持中文
-		params.add("title", title);
-		params.add("content", content);
-		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params,
-				headers);
-		// 执行HTTP请求
-		long id = rest.postForObject("https://blog.uzzz.org/api/post", requestEntity, Long.class);
-
-		return "OK:" + id;
 	}
 
 	public String git() throws IOException {
