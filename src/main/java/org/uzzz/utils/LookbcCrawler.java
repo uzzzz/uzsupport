@@ -1,4 +1,4 @@
-package org.uzzz.controller;
+package org.uzzz.utils;
 
 import org.springframework.stereotype.Component;
 
