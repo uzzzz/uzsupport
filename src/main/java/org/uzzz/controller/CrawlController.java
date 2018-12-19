@@ -17,8 +17,12 @@ public class CrawlController {
 
 	@GetMapping("blockchain")
 	public String blockchain() throws IOException {
-
 		return crawler.blockchain();
+	}
+
+	@GetMapping("url")
+	public String url(String url) throws IOException {
+		return crawler.url(url);
 	}
 
 }

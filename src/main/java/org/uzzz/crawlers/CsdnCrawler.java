@@ -54,4 +54,27 @@ public class CsdnCrawler {
 		return "crawler OK:" + (end - start) + "ms<br />";
 	}
 
+	public String url(String url) throws IOException {
+		long start = System.currentTimeMillis();
+		try {
+			Document _doc = Jsoup.connect(url).get();
+			String title = _doc.select(".title-article").text();
+			Elements article = _doc.select("article");
+			article.select("img").stream().parallel().forEach(element -> {
+				String src = element.absUrl("src");
+				if (src != null && src.startsWith("https://img-blog.csdn.net")) {
+					element.attr("src", "https://blog.uzzz.org/_p?" + src);
+				}
+			});
+			String c = article.html();
+
+			// post uzzzblog
+			task.postBlog(title, c);
+		} catch (IOException ioe) {
+		}
+		long end = System.currentTimeMillis();
+
+		return "crawler OK:" + (end - start) + "ms<br />";
+	}
+
 }
