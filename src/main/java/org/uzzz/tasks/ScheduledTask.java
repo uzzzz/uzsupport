@@ -1,11 +1,11 @@
-package org.uzzz;
+package org.uzzz.tasks;
 
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.uzzz.utils.CsdnCrawler;
+import org.uzzz.crawlers.CsdnCrawler;
 
 @Component
 public class ScheduledTask {

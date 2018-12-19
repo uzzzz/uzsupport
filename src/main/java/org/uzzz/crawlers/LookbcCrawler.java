@@ -1,4 +1,4 @@
-package org.uzzz.utils;
+package org.uzzz.crawlers;
 
 import org.springframework.stereotype.Component;
 

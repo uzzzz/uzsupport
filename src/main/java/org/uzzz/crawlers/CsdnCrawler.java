@@ -1,4 +1,4 @@
-package org.uzzz.utils;
+package org.uzzz.crawlers;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.uzzz.AsyncTask;
+import org.uzzz.tasks.AsyncTask;
 
 @Component
 public class CsdnCrawler {
@@ -34,7 +34,6 @@ public class CsdnCrawler {
 				String title = a.text();
 				String _url = a.attr("href");
 				Document _doc = Jsoup.connect(_url).get();
-				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
 
 				Elements article = _doc.select("article");
 				article.select("img").stream().parallel().forEach(element -> {
@@ -47,16 +46,12 @@ public class CsdnCrawler {
 
 				// post uzzzblog
 				task.postBlog(title, c);
-				// write to uzzz
-				task.writeGit(title, c, time);
 			} catch (IOException ioe) {
 			}
 		}
 		long end = System.currentTimeMillis();
 
-		String git = task.commitAndPushGit();
-
-		return "crawler OK:" + (end - start) + "ms<br />" + git;
+		return "crawler OK:" + (end - start) + "ms<br />";
 	}
 
 }
