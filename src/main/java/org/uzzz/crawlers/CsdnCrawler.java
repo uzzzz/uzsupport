@@ -23,7 +23,7 @@ public class CsdnCrawler {
 
 		String url = "https://www.csdn.net/nav/blockchain";
 		Connection conn = Jsoup.connect(url);
-		conn.header("Cookie", "uuid_tt_dd=83050375453151967274_20161022;");
+		conn.header("Cookie", "uuid_tt_dd=83050375453476967274_20181022;");
 		Document doc = conn.get();
 
 		Elements elements = doc.select("#feedlist_id li[data-type=blog]");
@@ -55,7 +55,7 @@ public class CsdnCrawler {
 	}
 
 	public String url(String url) throws IOException {
-		long start = System.currentTimeMillis();
+		String redirect = null;
 		try {
 			Document _doc = Jsoup.connect(url).get();
 			String title = _doc.select(".title-article").text();
@@ -69,12 +69,11 @@ public class CsdnCrawler {
 			String c = article.html();
 
 			// post uzzzblog
-			task.postBlog(title, c);
+			redirect = task.syncPostBlog(title, c);
 		} catch (IOException ioe) {
 		}
-		long end = System.currentTimeMillis();
 
-		return "crawler OK:" + (end - start) + "ms<br />";
+		return redirect;
 	}
 
 }

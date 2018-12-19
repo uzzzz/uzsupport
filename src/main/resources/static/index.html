@@ -17,14 +17,10 @@ body {
 </head>
 
 <body>
-	<ol>
-		<li>
-			<a href="/crawl/start">抓取全部</a>
-		</li>
-		<li>
-			<a href="/parser/start">解析全部</a>
-		</li>
-	</ol>
+	<form action="/crawl/url" method="get">
+		<input type="text" name="url" /> 
+		<input type="submit" value="确定" />
+	</form>
 </body>
 
 </html>

@@ -34,7 +34,7 @@ public class AsyncTask {
 	}
 
 	@Async
-	public void postBlog(String title, String c) {
+	public String postBlog(String title, String c) {
 		try {
 			int uid = random(2, 24);
 			HttpHeaders h = new HttpHeaders();
@@ -59,6 +59,7 @@ public class AsyncTask {
 				// 执行HTTP请求
 				String ret = rest.postForObject(postUrl, requestEntity, String.class);
 				System.out.println("post baidu : " + ret + " (" + content + ")");
+				return content;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -66,6 +67,11 @@ public class AsyncTask {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return "https://blog.uzzz.org";
 	}
 
+	public String syncPostBlog(String title, String c) {
+		return postBlog(title, c);
+	}
 }
