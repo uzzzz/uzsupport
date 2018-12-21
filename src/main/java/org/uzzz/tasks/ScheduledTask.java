@@ -22,6 +22,6 @@ public class ScheduledTask {
 	@Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60 * 10)
 	public void crawl_careerlife() throws IOException {
 		System.out.println("crawl careerlife @Scheduled");
-		crawler.blockchain();
+		crawler.careerlife();
 	}
 }

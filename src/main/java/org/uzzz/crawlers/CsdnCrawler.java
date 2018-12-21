@@ -56,6 +56,7 @@ public class CsdnCrawler {
 						element.attr("src", "https://blog.uzzz.org/_p?" + src);
 					}
 				});
+				article.select("script, #btn-readmore").remove();
 				String c = article.html();
 
 				// post uzzzblog
@@ -85,6 +86,7 @@ public class CsdnCrawler {
 					element.attr("src", "https://blog.uzzz.org/_p?" + src);
 				}
 			});
+			article.select("script, #btn-readmore").remove();
 			String c = article.html();
 
 			// post uzzzblog
