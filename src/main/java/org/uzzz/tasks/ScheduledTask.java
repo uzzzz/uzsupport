@@ -14,8 +14,14 @@ public class ScheduledTask {
 	private CsdnCrawler crawler;
 
 	@Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60 * 10)
-	public void crawl() throws IOException {
-		System.out.println("crawl @Scheduled");
+	public void crawl_blockchain() throws IOException {
+		System.out.println("crawl blockchain @Scheduled");
+		crawler.blockchain();
+	}
+
+	@Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60 * 10)
+	public void crawl_careerlife() throws IOException {
+		System.out.println("crawl careerlife @Scheduled");
 		crawler.blockchain();
 	}
 }

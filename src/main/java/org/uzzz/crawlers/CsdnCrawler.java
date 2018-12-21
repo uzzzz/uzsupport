@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.uzzz.tasks.AsyncTask;
+import org.uzzz.tasks.GitTask;
 
 @Component
 public class CsdnCrawler {
@@ -17,11 +18,23 @@ public class CsdnCrawler {
 	@Autowired
 	private AsyncTask task;
 
+	@Autowired
+	private GitTask gitTask;
+
 	public String blockchain() throws IOException {
+		String url = "https://www.csdn.net/nav/blockchain";
+		return crawl(2, url);
+	}
+
+	public String careerlife() throws IOException {
+		String url = "https://www.csdn.net/nav/career";
+		return crawl(3, url);
+	}
+
+	private String crawl(int cid, String url) throws IOException {
 
 		long start = System.currentTimeMillis();
 
-		String url = "https://www.csdn.net/nav/blockchain";
 		Connection conn = Jsoup.connect(url);
 		conn.header("Cookie", "uuid_tt_dd=83050375453476967274_20181022;");
 		Document doc = conn.get();
@@ -34,6 +47,7 @@ public class CsdnCrawler {
 				String title = a.text();
 				String _url = a.attr("href");
 				Document _doc = Jsoup.connect(_url).get();
+				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
 
 				Elements article = _doc.select("article");
 				article.select("img").stream().parallel().forEach(element -> {
@@ -45,19 +59,24 @@ public class CsdnCrawler {
 				String c = article.html();
 
 				// post uzzzblog
-				task.postBlog(title, c);
+				task.postBlog(cid, title, c);
+
+				gitTask.writeGit(title, c, time);
 			} catch (IOException ioe) {
 			}
 		}
 		long end = System.currentTimeMillis();
 
-		return "crawler OK:" + (end - start) + "ms<br />";
+		String git = gitTask.commitAndPushGit();
+
+		return "crawler OK:" + (end - start) + "ms<br />" + git;
 	}
 
 	public String url(String url) throws IOException {
 		String redirect = null;
 		try {
 			Document _doc = Jsoup.connect(url).get();
+			String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
 			String title = _doc.select(".title-article").text();
 			Elements article = _doc.select("article");
 			article.select("img").stream().parallel().forEach(element -> {
@@ -70,6 +89,9 @@ public class CsdnCrawler {
 
 			// post uzzzblog
 			redirect = task.syncPostBlog(title, c);
+
+			gitTask.writeGit(title, c, time);
+			gitTask.commitAndPushGit();
 		} catch (IOException ioe) {
 		}
 

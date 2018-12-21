@@ -34,9 +34,9 @@ public class AsyncTask {
 	}
 
 	@Async
-	public String postBlog(String title, String c) {
+	public String postBlog(int cid, String title, String c) {
 		try {
-			int uid = random(2, 24);
+			int uid = random(2, 65);
 			HttpHeaders h = new HttpHeaders();
 			// 请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
 			h.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -44,6 +44,7 @@ public class AsyncTask {
 			MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 			// 也支持中文
 			params.add("uid", String.valueOf(uid));
+			params.add("cid", String.valueOf(cid));
 			params.add("title", title);
 			params.add("content", c);
 			HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, h);
@@ -72,6 +73,6 @@ public class AsyncTask {
 	}
 
 	public String syncPostBlog(String title, String c) {
-		return postBlog(title, c);
+		return postBlog(2, title, c);
 	}
 }
