@@ -34,7 +34,7 @@ public class AsyncTask {
 	}
 
 	@Async
-	public String postBlog(int cid, String title, String c) {
+	public String postBlog(int cid, String title, String c, String thumbnail) {
 		try {
 			int uid = random(2, 65);
 			HttpHeaders h = new HttpHeaders();
@@ -47,6 +47,7 @@ public class AsyncTask {
 			params.add("cid", String.valueOf(cid));
 			params.add("title", title);
 			params.add("content", c);
+			params.add("thumbnail", thumbnail);
 			HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, h);
 			// 执行HTTP请求
 			long id = rest.postForObject("https://blog.uzzz.org/api/post", entity, Long.class);
@@ -72,7 +73,7 @@ public class AsyncTask {
 		return "https://blog.uzzz.org";
 	}
 
-	public String syncPostBlog(String title, String c) {
-		return postBlog(2, title, c);
+	public String syncPostBlog(String title, String c, String thumbnail) {
+		return postBlog(2, title, c, thumbnail);
 	}
 }

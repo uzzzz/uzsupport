@@ -1,6 +1,8 @@
 package org.uzzz.crawlers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -49,18 +51,24 @@ public class CsdnCrawler {
 				Document _doc = Jsoup.connect(_url).get();
 				String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
 
+				List<String> thumbnails = new ArrayList<>();
+
 				Elements article = _doc.select("article");
 				article.select("img").stream().parallel().forEach(element -> {
 					String src = element.absUrl("src");
-					if (src != null && src.startsWith("https://img-blog.csdn.net")) {
-						element.attr("src", "https://blog.uzzz.org/_p?" + src);
+					if (src != null //
+							&& (src.startsWith("https://img-blog.csdn.net")
+									|| src.startsWith("https://img-blog.csdnimg.cn"))) {
+						src = "https://blog.uzzz.org/_p?" + src;
+						element.attr("src", src);
 					}
+					thumbnails.add(src);
 				});
 				article.select("script, #btn-readmore").remove();
 				String c = article.html();
 
 				// post uzzzblog
-				task.postBlog(cid, title, c);
+				task.postBlog(cid, title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
 
 				gitTask.writeGit(title, c, time);
 			} catch (IOException ioe) {
@@ -80,17 +88,24 @@ public class CsdnCrawler {
 			String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
 			String title = _doc.select(".title-article").text();
 			Elements article = _doc.select("article");
+
+			List<String> thumbnails = new ArrayList<>();
+
 			article.select("img").stream().parallel().forEach(element -> {
 				String src = element.absUrl("src");
-				if (src != null && src.startsWith("https://img-blog.csdn.net")) {
-					element.attr("src", "https://blog.uzzz.org/_p?" + src);
+				if (src != null //
+						&& (src.startsWith("https://img-blog.csdn.net")
+								|| src.startsWith("https://img-blog.csdnimg.cn"))) {
+					src = "https://blog.uzzz.org/_p?" + src;
+					element.attr("src", src);
 				}
+				thumbnails.add(src);
 			});
 			article.select("script, #btn-readmore").remove();
 			String c = article.html();
 
 			// post uzzzblog
-			redirect = task.syncPostBlog(title, c);
+			redirect = task.syncPostBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
 
 			gitTask.writeGit(title, c, time);
 			gitTask.commitAndPushGit();
