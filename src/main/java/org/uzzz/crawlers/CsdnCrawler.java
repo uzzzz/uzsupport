@@ -59,7 +59,7 @@ public class CsdnCrawler {
 					if (src != null //
 							&& (src.startsWith("https://img-blog.csdn.net")
 									|| src.startsWith("https://img-blog.csdnimg.cn"))) {
-						src = "https://blog.uzzz.org/_p?" + src;
+						src = "https://blog.uzzz.org.cn/_p?" + src;
 						element.attr("src", src);
 					}
 					thumbnails.add(src);
@@ -96,7 +96,7 @@ public class CsdnCrawler {
 				if (src != null //
 						&& (src.startsWith("https://img-blog.csdn.net")
 								|| src.startsWith("https://img-blog.csdnimg.cn"))) {
-					src = "https://blog.uzzz.org/_p?" + src;
+					src = "https://blog.uzzz.org.cn/_p?" + src;
 					element.attr("src", src);
 				}
 				thumbnails.add(src);

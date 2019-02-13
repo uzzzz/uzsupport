@@ -38,6 +38,9 @@ public class ScheduledTask {
 		log.warn("rewritesitemapxml start");
 		String url = "https://blog.uzzz.org/api/rewritesitemapxml";
 		String ok = rest.getForObject(url, String.class);
+		
+		url = "https://blog.uzzz.org.cn/api/rewritesitemapxml";
+		ok += rest.getForObject(url, String.class);
 		log.warn("rewritesitemapxml end : " + ok);
 	}
 }
