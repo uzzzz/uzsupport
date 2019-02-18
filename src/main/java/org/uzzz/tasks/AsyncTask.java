@@ -74,6 +74,6 @@ public class AsyncTask {
 	}
 
 	public String syncPostBlog(String title, String c, String thumbnail) {
-		return postBlog(2, title, c, thumbnail);
+		return postBlog(1, title, c, thumbnail);
 	}
 }
