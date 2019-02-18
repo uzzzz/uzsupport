@@ -21,7 +21,7 @@ public class ScheduledTask {
 	@Autowired
 	private RestTemplate rest;
 
-	@Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60 * 10)
+	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 10)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		crawler.blockchain();
@@ -33,12 +33,18 @@ public class ScheduledTask {
 		crawler.careerlife();
 	}
 
-	@Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60 * 60 * 12)
+	@Scheduled(initialDelay = 3000, fixedDelay = 1000 * 60 * 10)
+	public void crawl_ai() throws IOException {
+		log.warn("crawl ai @Scheduled");
+		crawler.ai();
+	}
+
+	@Scheduled(initialDelay = 100000, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() {
 		log.warn("rewritesitemapxml start");
 		String url = "https://blog.uzzz.org/api/rewritesitemapxml";
 		String ok = rest.getForObject(url, String.class);
-		
+
 		url = "https://blog.uzzz.org.cn/api/rewritesitemapxml";
 		ok += rest.getForObject(url, String.class);
 		log.warn("rewritesitemapxml end : " + ok);

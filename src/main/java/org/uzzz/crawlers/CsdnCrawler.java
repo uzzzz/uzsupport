@@ -32,6 +32,11 @@ public class CsdnCrawler {
 		String url = "https://www.csdn.net/nav/career";
 		return crawl(3, url);
 	}
+	
+	public String ai() throws IOException {
+		String url = "https://www.csdn.net/nav/ai";
+		return crawl(4, url);
+	}
 
 	private String crawl(int cid, String url) throws IOException {
 
