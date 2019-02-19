@@ -5,10 +5,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.manlanvideo.crawler</groupId>
-	<artifactId>uzzzcrawler</artifactId>
-	<name>uzzzcrawler</name>
-	<description>uzzzcrawler</description>
+	<groupId>org.uzzz.support</groupId>
+	<artifactId>uzsupport</artifactId>
+	<name>uzsupport</name>
+	<description>uzsupport</description>
 	<version>2.0</version>
 	<packaging>jar</packaging>
 
@@ -91,7 +91,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>uzzzcrawler</finalName>
+		<finalName>uzsupport</finalName>
 
 		<plugins>
 			<plugin>
@@ -109,7 +109,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>org.uzzz.CrawlerApp</mainClass>
+					<mainClass>org.uzzz.SupportApp</mainClass>
 					<executable>true</executable>
 				</configuration>
 				<executions>

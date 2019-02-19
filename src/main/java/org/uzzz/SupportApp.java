@@ -12,10 +12,10 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-public class CrawlerApp {
+public class SupportApp {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(CrawlerApp.class, args);
+		SpringApplication.run(SupportApp.class, args);
 	}
 
 	@Autowired
