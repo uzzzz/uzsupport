@@ -21,6 +21,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<mahout.version>0.9</mahout.version>
+		<hadoop.version>3.2.0</hadoop.version>
 	</properties>
 
 	<dependencies>
@@ -38,6 +40,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-loader</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+			<version>1.4.7.RELEASE</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
@@ -75,7 +88,38 @@
 			<version>2.32</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15</artifactId>
+			<version>1.45</version>
+		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.mahout/mahout-core -->
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-core</artifactId>
+			<version>${mahout.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-math</artifactId>
+			<version>${mahout.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-client -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
