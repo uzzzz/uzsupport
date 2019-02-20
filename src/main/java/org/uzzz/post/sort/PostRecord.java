@@ -101,6 +101,6 @@ public class PostRecord implements DBWritable, Writable, WritableComparable<Post
 
 	@Override
 	public int compareTo(PostRecord o) {
-		return Double.compare(o.score, this.score);
+		return Double.compare(this.score, o.score);
 	}
 }

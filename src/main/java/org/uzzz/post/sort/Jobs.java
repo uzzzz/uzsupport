@@ -3,7 +3,7 @@ package org.uzzz.post.sort;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.db.DBConfiguration;
@@ -34,8 +34,10 @@ public class Jobs {
 		job.setJarByClass(PostsSorter.class);
 
 		job.setMapperClass(PostsMapper.class);
-		job.setMapOutputKeyClass(LongWritable.class);
+		job.setMapOutputKeyClass(DoubleWritable.class);
 		job.setMapOutputValueClass(PostRecord.class);
+
+		job.setSortComparatorClass(SortComparator.class);
 
 		job.setReducerClass(PostsReducer.class);
 		job.setOutputKeyClass(PostRecord.class);

@@ -8,7 +8,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
@@ -24,8 +24,9 @@ public class SupportApp implements ApplicationContextAware {
 		SpringApplication.run(SupportApp.class, args);
 	}
 
-	public static RedisTemplate<?, ?> redisTemplate() {
-		return context.getBean("redisTemplate", RedisTemplate.class);
+	@SuppressWarnings("unchecked")
+	public static <V> RedisService<V> redisService() {
+		return context.getBean("redisService", RedisService.class);
 	}
 
 	@Autowired
@@ -34,6 +35,13 @@ public class SupportApp implements ApplicationContextAware {
 	@Bean
 	public RestTemplate restTemplate() {
 		return builder.build();
+	}
+
+	@Bean("redisService")
+	public <V> RedisService<V> redisService(RedisConnectionFactory factory) {
+		RedisService<V> redis = new RedisService<V>(factory);
+		redis.afterPropertiesSet();
+		return redis;
 	}
 
 	@Override
