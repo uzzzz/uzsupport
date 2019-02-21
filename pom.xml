@@ -4,13 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>org.uzzz.support</groupId>
 	<artifactId>uzsupport</artifactId>
-	<name>uzsupport</name>
-	<description>uzsupport</description>
 	<version>2.0</version>
 	<packaging>jar</packaging>
+
+	<name>${project.artifactId}</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -135,15 +134,14 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>uzsupport</finalName>
-
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<configuration>
 					<delimiters>
-						<delimiter>-</delimiter>
+						<delimiter>=</delimiter>
 					</delimiters>
 					<useDefaultDelimiters>false</useDefaultDelimiters>
 				</configuration>
@@ -153,8 +151,10 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>org.uzzz.SupportApp</mainClass>
+					<jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
 					<executable>true</executable>
+					<mainClass>org.uzzz.SupportApp</mainClass>
+					<includeSystemScope>true</includeSystemScope>
 				</configuration>
 				<executions>
 					<execution>
@@ -165,6 +165,23 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>    <!--默认关掉单元测试 -->
+					<useSystemClassLoader>false</useSystemClassLoader>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

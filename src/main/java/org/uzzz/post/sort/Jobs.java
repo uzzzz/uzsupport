@@ -9,26 +9,40 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.db.DBConfiguration;
 import org.apache.hadoop.mapreduce.lib.db.DBInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.uzzz.post.sort.PostsSorter.PostsMapper;
 import org.uzzz.post.sort.PostsSorter.PostsReducer;
 
+@Component
 public class Jobs {
 
-	private static String sorterOutputPath = "/tmp/hadoop/output/sorter.out/";
+	@Value("${hadoop.sort.path}")
+	private String sortOutputPath;
 
-	private static Job sort() throws Exception {
+	@Value("${spring.datasource.driver-class-name}")
+	private String dbdriver;
+
+	@Value("${spring.datasource.url}")
+	private String dburl;
+
+	@Value("${spring.datasource.username}")
+	private String dbuser;
+
+	@Value("${spring.datasource.password}")
+	private String dbpass;
+
+	public boolean sort() throws Exception {
+
 		Configuration conf = new Configuration();
-
 		// 删除旧的历史文件
 		FileSystem fs = FileSystem.get(conf);
-		Path f = new Path(sorterOutputPath);
+		Path f = new Path(sortOutputPath);
 		if (fs.exists(f)) {
 			fs.delete(f, true);
 		}
 
-		DBConfiguration.configureDB(conf, "com.mysql.jdbc.Driver",
-				"jdbc:mysql://127.0.0.1:3306/uzblog?useSSL=false&characterEncoding=utf8", "root", "Abc1234567!");
-
+		DBConfiguration.configureDB(conf, dbdriver, dburl, dbuser, dbpass);
 		Job job = Job.getInstance(conf, "uzblog.sort");
 
 		job.setJarByClass(PostsSorter.class);
@@ -37,7 +51,7 @@ public class Jobs {
 		job.setMapOutputKeyClass(DoubleWritable.class);
 		job.setMapOutputValueClass(PostRecord.class);
 
-		job.setSortComparatorClass(SortComparator.class);
+		job.setSortComparatorClass(PostRecord.ScoreComparator.class);
 
 		job.setReducerClass(PostsReducer.class);
 		job.setOutputKeyClass(PostRecord.class);
@@ -48,11 +62,9 @@ public class Jobs {
 		DBInputFormat.setInput(job, PostRecord.class, "mto_posts", null, "id", input_fields);
 
 		job.setOutputFormatClass(SortedOutputFormat.class);
-		FileOutputFormat.setOutputPath(job, new Path(sorterOutputPath));
-		return job;
+		FileOutputFormat.setOutputPath(job, new Path(sortOutputPath));
+
+		return job.waitForCompletion(true);
 	}
 
-	public static boolean start() throws Exception {
-		return sort().waitForCompletion(true);
-	}
 }

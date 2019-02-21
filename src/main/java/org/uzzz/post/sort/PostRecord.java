@@ -9,12 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
-import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.lib.db.DBWritable;
 
-public class PostRecord implements DBWritable, Writable, WritableComparable<PostRecord>, Serializable {
+public class PostRecord implements DBWritable, Writable, Serializable {
 
 	private static final long serialVersionUID = 5283103382129613704L;
 
@@ -99,8 +99,9 @@ public class PostRecord implements DBWritable, Writable, WritableComparable<Post
 		return numerator / denominator;
 	}
 
-	@Override
-	public int compareTo(PostRecord o) {
-		return Double.compare(this.score, o.score);
+	public static class ScoreComparator extends DoubleWritable.Comparator {
+		public int compare(byte[] b1, int s1, int l1, byte[] b2, int s2, int l2) {
+			return -super.compare(b1, s1, l1, b2, s2, l2);
+		}
 	}
 }
