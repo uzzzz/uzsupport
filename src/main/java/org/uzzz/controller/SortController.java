@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uzzz.RedisService;
 import org.uzzz.post.sort.Jobs;
+import org.uzzz.post.sort.PostRecord;
 
 @Controller
 @RequestMapping("sort")
@@ -40,14 +41,14 @@ public class SortController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/list")
 	@ResponseBody
-	public List<Double> list( //
+	public List<PostRecord> list( //
 			@RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "20") int pagesize) throws Exception {
 		page = (--page) < 0 ? 0 : page;
 		int start = page * pagesize;
 		int end = start + pagesize - 1;
-		ListOperations<String, Double> ops = (ListOperations<String, Double>) redisService.opsForList();
-		List<Double> list = ops.range("sorted_posts", start, end);
+		ListOperations<String, PostRecord> ops = (ListOperations<String, PostRecord>) redisService.opsForList();
+		List<PostRecord> list = ops.range("sorted_posts", start, end);
 		return list;
 	}
 }

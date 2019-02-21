@@ -20,16 +20,16 @@ public class SortedOutputFormat extends FileOutputFormat<PostRecord, NullWritabl
 
 	protected static class RedisRecordWriter extends RecordWriter<PostRecord, NullWritable> {
 
-		private RedisService<Double> redisService;
+		private RedisService<PostRecord> redisService;
 
-		public RedisRecordWriter(RedisService<Double> redisService) {
+		public RedisRecordWriter(RedisService<PostRecord> redisService) {
 			this.redisService = redisService;
 		}
 
 		@Override
 		public void write(PostRecord key, NullWritable value) throws IOException, InterruptedException {
-			ListOperations<String, Double> ops = (ListOperations<String, Double>) redisService.opsForList();
-			ops.rightPush("sorted_posts", key.score);
+			ListOperations<String, PostRecord> ops = (ListOperations<String, PostRecord>) redisService.opsForList();
+			ops.rightPush("sorted_posts", key);
 		}
 
 		@Override

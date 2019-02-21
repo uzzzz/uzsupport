@@ -44,6 +44,46 @@ public class PostRecord implements DBWritable, Writable, Serializable {
 		this.id = id;
 	}
 
+	public int getViews() {
+		return views;
+	}
+
+	public void setViews(int views) {
+		this.views = views;
+	}
+
+	public int getFavors() {
+		return favors;
+	}
+
+	public void setFavors(int favors) {
+		this.favors = favors;
+	}
+
+	public int getComments() {
+		return comments;
+	}
+
+	public void setComments(int comments) {
+		this.comments = comments;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public double getScore() {
+		return score;
+	}
+
+	public void setScore(double score) {
+		this.score = score;
+	}
+
 	@Override
 	public void readFields(DataInput input) throws IOException {
 		this.id = input.readLong();
