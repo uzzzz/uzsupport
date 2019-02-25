@@ -51,29 +51,46 @@ public class AsyncTask {
 			HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, h);
 			// 执行HTTP请求
 			long id = rest.postForObject("https://blog.uzzz.org/api/post", entity, Long.class);
-
-			try { // post baidu
-				String postUrl = "http://data.zz.baidu.com/urls?site=https://blog.uzzz.org&token=pJ67TFnK02hkMHlt";
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.TEXT_PLAIN);
-				String content = "https://blog.uzzz.org/view/" + id;
-				HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
-				// 执行HTTP请求
-				String ret = rest.postForObject(postUrl, requestEntity, String.class);
-				System.out.println("post baidu : " + ret + " (" + content + ")");
-				return content;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+			postBaiduForOrg(id);
+			postBaiduForOrgCn(id);
+			return "https://blog.uzzz.org.cn/view/" + id;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return "https://blog.uzzz.org";
 	}
 
 	public String syncPostBlog(String title, String c, String thumbnail) {
 		return postBlog(1, title, c, thumbnail);
+	}
+
+	private void postBaiduForOrg(long id) {
+		try { // post baidu
+			String postUrl = "http://data.zz.baidu.com/urls?site=https://blog.uzzz.org&token=pJ67TFnK02hkMHlt";
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.TEXT_PLAIN);
+			String content = "https://blog.uzzz.org/view/" + id;
+			HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
+			// 执行HTTP请求
+			String ret = rest.postForObject(postUrl, requestEntity, String.class);
+			System.out.println("post baidu : " + ret + " (" + content + ")");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void postBaiduForOrgCn(long id) {
+		try { // post baidu
+			String postUrl = "http://data.zz.baidu.com/urls?site=https://blog.uzzz.org.cn&token=HpJK9usLd5M83kzx";
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.TEXT_PLAIN);
+			String content = "https://blog.uzzz.org.cn/view/" + id;
+			HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
+			// 执行HTTP请求
+			String ret = rest.postForObject(postUrl, requestEntity, String.class);
+			System.out.println("post baidu : " + ret + " (" + content + ")");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
