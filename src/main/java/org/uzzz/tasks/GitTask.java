@@ -14,7 +14,6 @@ import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.uzzz.SecurityUtil;
 
 @Component
 public class GitTask {
@@ -22,7 +21,7 @@ public class GitTask {
 	@Value("${uzzz.path}")
 	private String uzzzPath;
 
-	public void writeGit(String title, String c, String time) {
+	public void writeGit(long id, String title, String c, String time) {
 		try {
 			c = URLEncoder.encode(c, "UTF-8");
 			c = "{{ \"" + c + "\" | url_decode}}";
@@ -38,10 +37,8 @@ public class GitTask {
 
 			String path = uzzzPath + "/_posts/";
 
-			String clearTitle = SecurityUtil.signatureByMD5(title).toLowerCase() + ".html";
-
 			BufferedWriter writer = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(path + time + "-" + clearTitle, false), "UTF-8"));
+					new OutputStreamWriter(new FileOutputStream(path + time + "-" + id + ".html", false), "UTF-8"));
 			writer.write(content);
 			writer.close();
 		} catch (Exception e) {

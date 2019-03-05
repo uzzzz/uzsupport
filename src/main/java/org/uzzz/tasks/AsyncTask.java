@@ -34,7 +34,7 @@ public class AsyncTask {
 	}
 
 	@Async
-	public String postBlog(int cid, String title, String c, String thumbnail) {
+	public long postBlog(int cid, String title, String c, String thumbnail) {
 		try {
 			int uid = random(2, 65);
 			HttpHeaders h = new HttpHeaders();
@@ -53,14 +53,14 @@ public class AsyncTask {
 			long id = rest.postForObject("https://blog.uzzz.org/api/post", entity, Long.class);
 			postBaiduForOrg(id);
 			postBaiduForOrgCn(id);
-			return "https://blog.uzzz.org.cn/view/" + id;
+			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "https://blog.uzzz.org";
+		return 0;
 	}
 
-	public String syncPostBlog(String title, String c, String thumbnail) {
+	public long syncPostBlog(String title, String c, String thumbnail) {
 		return postBlog(1, title, c, thumbnail);
 	}
 

@@ -32,7 +32,7 @@ public class CsdnCrawler {
 		String url = "https://www.csdn.net/nav/career";
 		return crawl(3, url);
 	}
-	
+
 	public String ai() throws IOException {
 		String url = "https://www.csdn.net/nav/ai";
 		return crawl(4, url);
@@ -73,9 +73,9 @@ public class CsdnCrawler {
 				String c = article.html();
 
 				// post uzzzblog
-				task.postBlog(cid, title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
+				long id = task.postBlog(cid, title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
 
-				gitTask.writeGit(title, c, time);
+				gitTask.writeGit(id, title, c, time);
 			} catch (IOException ioe) {
 			}
 		}
@@ -86,8 +86,8 @@ public class CsdnCrawler {
 		return "crawler OK:" + (end - start) + "ms<br />" + git;
 	}
 
-	public String url(String url) throws IOException {
-		String redirect = null;
+	public long url(String url) throws IOException {
+		long id = 0;
 		try {
 			Document _doc = Jsoup.connect(url).get();
 			String time = _doc.select(".time").first().text().split("日")[0].replace("年", "-").replace("月", "-");
@@ -110,14 +110,14 @@ public class CsdnCrawler {
 			String c = article.html();
 
 			// post uzzzblog
-			redirect = task.syncPostBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
+			id = task.syncPostBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
 
-			gitTask.writeGit(title, c, time);
+			gitTask.writeGit(id, title, c, time);
 			gitTask.commitAndPushGit();
 		} catch (IOException ioe) {
 		}
 
-		return redirect;
+		return id;
 	}
 
 }

@@ -24,7 +24,11 @@ public class CrawlController {
 
 	@GetMapping("url")
 	public String url(String url) throws IOException {
-		String redirect = crawler.url(url);
-		return "redirect:" + redirect;
+		long id = crawler.url(url);
+		if (id == 0) {
+			return "redirect:https://blog.uzzz.org.cn/";
+		} else {
+			return "redirect:https://blog.uzzz.org.cn/view/" + 0;
+		}
 	}
 }
