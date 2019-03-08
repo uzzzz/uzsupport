@@ -6,7 +6,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -33,7 +32,7 @@ public class AsyncTask {
 		return s;
 	}
 
-	@Async
+	// @Async
 	public long postBlog(int cid, String title, String c, String thumbnail) {
 		try {
 			int uid = random(2, 65);
