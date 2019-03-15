@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.uzzz.crawlers.CsdnCrawler;
 import org.uzzz.post.sort.Jobs;
 import org.uzzz.service.PostService;
@@ -28,9 +27,6 @@ public class ScheduledTask {
 
 	@Autowired
 	private CsdnCrawler crawler;
-
-	@Autowired
-	private RestTemplate rest;
 
 	@Autowired
 	private Jobs jobs;
@@ -57,47 +53,48 @@ public class ScheduledTask {
 	}
 
 	@Scheduled(initialDelay = 100 * 1000, fixedDelay = 1000 * 60 * 60 * 12)
-	public void rewritesitemapxml() {
+	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
-		String url = "https://blog.uzzz.org/api/rewritesitemapxml";
-		String ok = rest.getForObject(url, String.class);
-
-		url = "https://blog.uzzz.org.cn/api/rewritesitemapxml";
-		ok += rest.getForObject(url, String.class);
+		String ok = _rewritesitemapxml("blog.uzzz.org", "blog.uzzz.org.cn", "notbe.cn");
 		log.warn("rewritesitemapxml end : " + ok);
 	}
 
-	private String _rewritesitemapxml() throws IOException {
-
-		String host = "";
-		String baseUrl = "https://" + host;
-		String localRoot = "/web/" + host + "/static/";
-		WebSitemapGenerator wsgGzip = WebSitemapGenerator.builder(baseUrl, new File(localRoot)).gzip(true).build();
-
+	private String _rewritesitemapxml(String... hosts) throws IOException {
 		List<Long> ids = postService.findAllIds();
-		for (Long id : ids) {
-			WebSitemapUrl url = new WebSitemapUrl.Options(baseUrl + "/view/" + id).priority(0.9)
-					.changeFreq(ChangeFreq.DAILY).build();
-			wsgGzip.addUrl(url);
+
+		if (hosts == null || hosts.length == 0) {
+			return "Error!";
+		}
+		for (String host : hosts) {
+			String baseUrl = "https://" + host;
+			String localRoot = "/web/uzblog/static/" + host + "/";
+			WebSitemapGenerator wsgGzip = WebSitemapGenerator.builder(baseUrl, new File(localRoot)).gzip(true).build();
+
+			for (Long id : ids) {
+				WebSitemapUrl url = new WebSitemapUrl.Options(baseUrl + "/view/" + id).priority(0.9)
+						.changeFreq(ChangeFreq.DAILY).build();
+				wsgGzip.addUrl(url);
+			}
+
+			List<File> viewsGzip = wsgGzip.write();
+
+			// 构造 sitemap_index 生成器
+			W3CDateFormat dateFormat = new W3CDateFormat(W3CDateFormat.Pattern.DAY);
+			SitemapIndexGenerator sitemapIndexGenerator = new SitemapIndexGenerator.Options(baseUrl,
+					new File(localRoot + "/sitemap_index.xml")).autoValidate(true).dateFormat(dateFormat).build();
+
+			viewsGzip.forEach(e -> {
+				try { // 组装 sitemap 文件 URL 地址
+					String url = baseUrl + "/" + e.getName();
+					sitemapIndexGenerator.addUrl(url);
+				} catch (MalformedURLException mue) {
+					mue.printStackTrace();
+				}
+			});
+			// 生成 sitemap_index 文件
+			sitemapIndexGenerator.write();
 		}
 
-		List<File> viewsGzip = wsgGzip.write();
-
-		// 构造 sitemap_index 生成器
-		W3CDateFormat dateFormat = new W3CDateFormat(W3CDateFormat.Pattern.DAY);
-		SitemapIndexGenerator sitemapIndexGenerator = new SitemapIndexGenerator.Options(baseUrl,
-				new File(localRoot + "/sitemap_index.xml")).autoValidate(true).dateFormat(dateFormat).build();
-
-		viewsGzip.forEach(e -> {
-			try { // 组装 sitemap 文件 URL 地址
-				String url = baseUrl + "/" + e.getName();
-				sitemapIndexGenerator.addUrl(url);
-			} catch (MalformedURLException mue) {
-				mue.printStackTrace();
-			}
-		});
-		// 生成 sitemap_index 文件
-		sitemapIndexGenerator.write();
 		return "OK";
 	}
 

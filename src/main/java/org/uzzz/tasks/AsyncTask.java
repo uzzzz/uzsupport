@@ -49,7 +49,7 @@ public class AsyncTask {
 			params.add("thumbnail", thumbnail);
 			HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, h);
 			// 执行HTTP请求
-			long id = rest.postForObject("https://blog.uzzz.org/api/post", entity, Long.class);
+			long id = rest.postForObject("https://blog.uzzz.org.cn/api/post", entity, Long.class);
 			postBaiduForOrg(id);
 			postBaiduForOrgCn(id);
 			return id;
