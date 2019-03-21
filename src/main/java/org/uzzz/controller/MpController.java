@@ -19,8 +19,8 @@ public class MpController {
 	@PostMapping
 	@ResponseBody
 	public String receive(String host, String path, String contentType, String source) {
-		if (StringUtils.isNotBlank(host) //
-				&& host.startsWith("https://mp.weixin.qq.com/s?")) {
+		if (StringUtils.isNotBlank(path) //
+				&& path.startsWith("https://mp.weixin.qq.com/s?")) {
 			MpSource mpSource = new MpSource();
 			mpSource.setContentType(contentType);
 			mpSource.setHost(host);
