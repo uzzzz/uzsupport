@@ -2,7 +2,6 @@ package org.uzzz.handler;
 
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +38,6 @@ import org.uzzz.dao.WXArticleRepository;
 @Component
 public class ProxyHandler extends Handler<ProxyData> {
 
-	private static Logger logger = Logger.getLogger(ProxyHandler.class);
-
 	@Autowired
 	private WXArticleRepository wxArticleRepository;
 
@@ -55,8 +52,6 @@ public class ProxyHandler extends Handler<ProxyData> {
 
 	@Override
 	public void run(ProxyData data) {
-		logger.info(data);
-		logger.info(data.getSource());
 		try {
 			String path = data.getPath();
 			String contentType = data.getContentType();
@@ -120,7 +115,6 @@ public class ProxyHandler extends Handler<ProxyData> {
 		}
 
 		try {
-			System.out.println(msgList);
 			JSONObject json = new JSONObject(msgList);
 			JSONArray list = json.getJSONArray("list");
 
