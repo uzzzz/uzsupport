@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -82,37 +81,8 @@ public class ProxyHandler extends Handler<ProxyData> {
 				break;
 			}
 		}
-		Document doc = Jsoup.parse(source);
 
-		String msgList = null;
-		String scriptString = null;
-		for (Element e : doc.body().select("script")) {
-			if (e.html().contains("msgList")) {
-				scriptString = e.html();
-			}
-		}
-
-		String split = ";\r";
-		if (scriptString.contains(";\r\n")) {
-			split = ";\r\n";
-		} else if (scriptString.contains(";\n")) {
-			split = ";\n";
-		}
-
-		String[] scripts = scriptString.split(split);
-		for (String s : scripts) {
-			s = s.trim();
-			if (s.contains("=")) {
-				int eq = s.indexOf("=");
-				String key = s.substring(0, eq);
-				String value = s.substring(eq + 1);
-				if (key.contains("msgList")) {
-					int begin = value.indexOf("'") + 1;
-					int end = value.indexOf("'", begin);
-					msgList = value.substring(begin, end).replace("&quot;", "\"");
-				}
-			}
-		}
+		String msgList = substring(source, "var msgList = '", "'").replace("&quot;", "\"");
 
 		try {
 			JSONObject json = new JSONObject(msgList);
