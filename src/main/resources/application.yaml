@@ -1,0 +1,26 @@
+# server application
+spring.application.name: =artifactId=
+spring.mvc.favicon.enabled: false
+server.host: support.uzzz.org.cn
+server.port: 16001
+
+# logger, to see logback-spring.xml
+logging.level: INFO
+logging.level.app: DEBUG
+
+spring.redis.host: 127.0.0.1
+spring.redis.port: 6379
+spring.redis.password:
+
+spring.datasource.driver-class-name: com.mysql.jdbc.Driver
+spring.datasource.url: jdbc:mysql://127.0.0.1:3306/uzblog?useSSL=false&characterEncoding=utf8
+spring.datasource.username: root
+spring.datasource.password: Abc1234567!
+spring.jpa.hibernate.ddl-auto: update
+
+uzzz.path: /web/uzzzz.github.io
+
+hadoop.sort.path: /web/support.uzzz.org/hadoop/sorter.out/
+
+weixin.url: https://mp.weixin.qq.com
+image.proxy: https://ss.csdn.net/p?

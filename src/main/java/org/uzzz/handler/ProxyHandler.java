@@ -56,6 +56,7 @@ public class ProxyHandler extends Handler<ProxyData> {
 	@Override
 	public void run(ProxyData data) {
 		logger.info(data);
+		logger.info(data.getSource());
 		try {
 			String path = data.getPath();
 			String contentType = data.getContentType();
@@ -407,53 +408,14 @@ public class ProxyHandler extends Handler<ProxyData> {
 		}
 
 		Document doc = Jsoup.parse(source);
-		String title = "";
-		String description = "";
-		long datetime = 0;
+		String title = substring(source, "var msg_title = \"", "\";");
+		String description = substring(source, "var msg_desc = \"", "\";");
+		String datetimeStr = substring(source, "var ct = \"", "\";");
+		long datetime = Long.parseLong(datetimeStr) * 1000;
 		String author = "";
-
-		Elements ems = doc.select("em.rich_media_meta_text");
+		Elements ems = doc.select("span.rich_media_meta_text");
 		if (ems.size() >= 2) {
 			author = ems.get(1).html();
-		}
-
-		String scriptString = "";
-		for (Element e : doc.getElementsByTag("script")) {
-			if (e.html().contains("ori_head_img_url")) {
-				scriptString = e.html();
-				break;
-			}
-		}
-
-		String split = ";\r";
-		if (scriptString.contains(";\r\n")) {
-			split = ";\r\n";
-		} else if (scriptString.contains(";\n")) {
-			split = ";\n";
-		}
-
-		String[] scripts = scriptString.split(split);
-		for (String s : scripts) {
-			s = s.trim();
-			if (s.startsWith("var ") && s.contains("=")) {
-				int eq = s.indexOf("=");
-				String key = s.substring(0, eq).trim();
-				String value = s.substring(eq + 1);
-				if (key.contains("msg_title")) {
-					int begin = value.indexOf("\"") + 1;
-					int end = value.indexOf("\"", begin);
-					title = value.substring(begin, end);
-				} else if (key.contains("msg_desc")) {
-					int begin = value.indexOf("\"") + 1;
-					int end = value.indexOf("\"", begin);
-					description = value.substring(begin, end);
-				} else if (key.equals("var ct")) {
-					int begin = value.indexOf("\"") + 1;
-					int end = value.indexOf("\"", begin);
-					String ct = value.substring(begin, end);
-					datetime = Long.parseLong(ct) * 1000;
-				}
-			}
 		}
 
 		WXArticle wxArticle = wxArticleRepository.findByBizAndMidAndIdx(biz, mid, idx);
