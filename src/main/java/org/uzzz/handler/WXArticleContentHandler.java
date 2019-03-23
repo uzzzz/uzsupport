@@ -121,7 +121,9 @@ public class WXArticleContentHandler extends Handler<WXArticleContent> {
 		}
 
 		WXArticleContent ac = wxACRepository.findByArticleAndLevel(wxArticleContent.getArticle(), 3);
+		boolean send2blog = false;
 		if (ac == null) {
+			send2blog = true;
 			ac = new WXArticleContent();
 			ac.setLevel(3);
 			ac.setArticle(wxArticleContent.getArticle());
@@ -167,12 +169,13 @@ public class WXArticleContentHandler extends Handler<WXArticleContent> {
 		wxACRepository.save(ac);
 
 		try {
-			// post uzzzblog
-			long id = task.syncPostBlog(ac.getTitle(), ac.getSource(), thumbnails.size() > 0 ? thumbnails.get(0) : "");
-
-			String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-			gitTask.writeGit(id, ac.getTitle(), ac.getSource(), time);
-			gitTask.commitAndPushGit();
+			if (send2blog) { // post uzzzblog
+				long id = task.syncPostBlog(ac.getTitle(), ac.getSource(),
+						thumbnails.size() > 0 ? thumbnails.get(0) : "");
+				String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+				gitTask.writeGit(id, ac.getTitle(), ac.getSource(), time);
+				gitTask.commitAndPushGit();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
