@@ -55,7 +55,7 @@ public class ScheduledTask {
 	@Scheduled(initialDelay = 100 * 1000, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
-		String ok = _rewritesitemapxml("blog.uzzz.org", "blog.uzzz.org.cn", "notbe.cn");
+		String ok = _rewritesitemapxml("blog.uzzz.org", "blog.uzzz.org.cn", "uzzz.org.cn", "notbe.cn");
 		log.warn("rewritesitemapxml end : " + ok);
 	}
 
