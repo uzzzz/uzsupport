@@ -29,13 +29,16 @@ public class AsyncTask {
 
 	private int random(int min, int max) {
 		int s = (int) min + (int) (Math.random() * (max - min));
+		if (s == 88) {
+			return random(min, max);
+		}
 		return s;
 	}
 
 	// @Async
 	public long postBlog(int cid, String title, String c, String thumbnail) {
 		try {
-			int uid = random(2, 65);
+			int uid = random(2, 200);
 			HttpHeaders h = new HttpHeaders();
 			// 请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
 			h.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
