@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.uzzz.crawlers.CsdnCrawler;
@@ -24,6 +25,12 @@ import com.redfin.sitemapgenerator.WebSitemapUrl;
 public class ScheduledTask {
 
 	private static Log log = LogFactory.getLog(ScheduledTask.class);
+
+	@Value("${uzshare.static.path}")
+	private String uzshareStaticPath;
+
+	@Value("${sitemap.sites}")
+	private String[] sitemapSites;
 
 	@Autowired
 	private CsdnCrawler crawler;
@@ -55,7 +62,7 @@ public class ScheduledTask {
 	@Scheduled(initialDelay = 100 * 1000, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
-		String ok = _rewritesitemapxml("blog.uzzz.org", "blog.uzzz.org.cn", "uzzz.org.cn", "notbe.cn");
+		String ok = _rewritesitemapxml(sitemapSites);
 		log.warn("rewritesitemapxml end : " + ok);
 	}
 
@@ -67,7 +74,7 @@ public class ScheduledTask {
 		}
 		for (String host : hosts) {
 			String baseUrl = "https://" + host;
-			String localRoot = "/web/uzblog/static/" + host + "/";
+			String localRoot = uzshareStaticPath + host + "/";
 			WebSitemapGenerator wsgGzip = WebSitemapGenerator.builder(baseUrl, new File(localRoot)).gzip(true).build();
 
 			for (Long id : ids) {
