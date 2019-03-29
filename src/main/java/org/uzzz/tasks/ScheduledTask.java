@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.uzzz.crawlers.CsdnCrawler;
-import org.uzzz.post.sort.Jobs;
+import org.uzzz.post.sort.SortJob;
 import org.uzzz.service.PostService;
 
 import com.redfin.sitemapgenerator.ChangeFreq;
@@ -36,7 +36,7 @@ public class ScheduledTask {
 	private CsdnCrawler crawler;
 
 	@Autowired
-	private Jobs jobs;
+	private SortJob jobs;
 
 	@Autowired
 	private PostService postService;

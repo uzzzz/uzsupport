@@ -18,4 +18,9 @@ public class PostServiceImpl implements PostService {
 	public List<Long> findAllIds() {
 		return postDao.findAllIds();
 	}
+
+	@Override
+	public List<String> findAllTitles() {
+		return postDao.findAllTitles();
+	}
 }

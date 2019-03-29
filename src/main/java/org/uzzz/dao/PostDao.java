@@ -20,4 +20,7 @@ import org.uzzz.bean.Post;
 public interface PostDao extends JpaRepository<Post, Long> {
 	@Query("select id from Post")
 	List<Long> findAllIds();
+
+	@Query("select title from Post")
+	List<String> findAllTitles();
 }

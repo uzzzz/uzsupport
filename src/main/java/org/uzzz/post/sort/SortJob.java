@@ -11,26 +11,15 @@ import org.apache.hadoop.mapreduce.lib.db.DBInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.uzzz.post.BaseJob;
 import org.uzzz.post.sort.PostsSorter.PostsMapper;
 import org.uzzz.post.sort.PostsSorter.PostsReducer;
 
 @Component
-public class Jobs {
+public class SortJob extends BaseJob {
 
 	@Value("${hadoop.sort.path}")
 	private String sortOutputPath;
-
-	@Value("${spring.datasource.driver-class-name}")
-	private String dbdriver;
-
-	@Value("${spring.datasource.url}")
-	private String dburl;
-
-	@Value("${spring.datasource.username}")
-	private String dbuser;
-
-	@Value("${spring.datasource.password}")
-	private String dbpass;
 
 	public boolean sort() throws Exception {
 

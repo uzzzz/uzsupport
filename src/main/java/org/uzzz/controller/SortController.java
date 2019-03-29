@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uzzz.RedisService;
-import org.uzzz.post.sort.Jobs;
+import org.uzzz.post.sort.SortJob;
 import org.uzzz.post.sort.PostRecord;
 
 @Controller
@@ -22,7 +22,7 @@ public class SortController {
 	private RedisService redisService;
 
 	@Autowired
-	private Jobs jobs;
+	private SortJob jobs;
 
 	@GetMapping("start")
 	@ResponseBody
