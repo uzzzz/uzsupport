@@ -3,6 +3,7 @@ package org.uzzz.post.duplicate;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -40,7 +41,7 @@ public class DuplicateJob extends BaseJob {
 
 		job.setReducerClass(DuplicateMapreduce.DuplicateReducer.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
 
 		job.setInputFormatClass(DBInputFormat.class);
 		String[] input_fields = { "id", "title" };

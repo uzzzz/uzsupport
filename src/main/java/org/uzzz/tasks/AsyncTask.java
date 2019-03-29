@@ -1,11 +1,14 @@
 package org.uzzz.tasks;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -91,6 +94,22 @@ public class AsyncTask {
 			// 执行HTTP请求
 			String ret = rest.postForObject(postUrl, requestEntity, String.class);
 			System.out.println("post baidu : " + ret + " (" + content + ")");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Async
+	public void deletePost(List<Long> ids) {
+		try {
+			HttpHeaders h = new HttpHeaders();
+			h.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+			MultiValueMap<String, Long> params = new LinkedMultiValueMap<String, Long>();
+			for (Long id : ids) {
+				params.add("id", id);
+			}
+			HttpEntity<MultiValueMap<String, Long>> entity = new HttpEntity<MultiValueMap<String, Long>>(params, h);
+			rest.postForObject("https://uzzz.org.cn/api/delete_posts", entity, String.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

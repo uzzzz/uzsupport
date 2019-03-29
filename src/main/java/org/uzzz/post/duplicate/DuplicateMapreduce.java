@@ -1,11 +1,16 @@
 package org.uzzz.post.duplicate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.uzzz.SupportApp;
+import org.uzzz.tasks.AsyncTask;
 
 public class DuplicateMapreduce {
 
@@ -17,20 +22,21 @@ public class DuplicateMapreduce {
 		}
 	}
 
-	public static class DuplicateReducer extends Reducer<Text, LongWritable, Text, Text> {
+	public static class DuplicateReducer extends Reducer<Text, LongWritable, Text, IntWritable> {
 		@Override
 		protected void reduce(Text key, Iterable<LongWritable> values, Context context)
 				throws IOException, InterruptedException {
-			StringBuffer sb = new StringBuffer();
+			List<Long> list = new ArrayList<Long>();
 			int size = 0;
 			for (LongWritable id : values) {
+				if (size > 0) {
+					list.add(id.get());
+				}
 				size++;
-				sb.append(id.toString()).append(",");
 			}
-			sb.deleteCharAt(sb.length() - 1);
-			if (size > 10) {
-				context.write(key, new Text(sb.toString()));
-			}
+			context.write(key, new IntWritable(list.size()));
+
+			SupportApp.context.getBean(AsyncTask.class).deletePost(list);
 		}
 	}
 }
