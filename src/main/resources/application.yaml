@@ -23,6 +23,7 @@ uzzz.path: /web/uzzzz.github.io
 
 hadoop.sort.path: /web/uzsupport/hadoop/sorter.out/
 hadoop.duplicate.path: /web/uzsupport/hadoop/duplicate.out/
+hadoop.semblance.path: /web/uzsupport/hadoop/semblance.out/
 
 weixin.url: https://mp.weixin.qq.com
 image.proxy: https://ss.csdn.net/p?
