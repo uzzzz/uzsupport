@@ -1,4 +1,4 @@
-package org.uzzz.post;
+package org.uzzz.jobs;
 
 import org.springframework.beans.factory.annotation.Value;
 

@@ -1,4 +1,4 @@
-package org.uzzz.post.sort;
+package org.uzzz.jobs.sort;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -11,9 +11,9 @@ import org.apache.hadoop.mapreduce.lib.db.DBInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.uzzz.post.BaseJob;
-import org.uzzz.post.sort.PostsSorter.PostsMapper;
-import org.uzzz.post.sort.PostsSorter.PostsReducer;
+import org.uzzz.jobs.BaseJob;
+import org.uzzz.jobs.sort.PostsSorter.PostsMapper;
+import org.uzzz.jobs.sort.PostsSorter.PostsReducer;
 
 @Component
 public class SortJob extends BaseJob {

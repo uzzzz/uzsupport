@@ -1,4 +1,4 @@
-package org.uzzz.post.duplicate;
+package org.uzzz.jobs.duplicate;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -1,4 +1,4 @@
-package org.uzzz.post.duplicate;
+package org.uzzz.jobs.duplicate;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.lib.db.DBInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.uzzz.post.BaseJob;
+import org.uzzz.jobs.BaseJob;
 
 @Component
 public class DuplicateJob extends BaseJob {

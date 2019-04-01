@@ -1,4 +1,4 @@
-package org.uzzz.post.sort;
+package org.uzzz.jobs.sort;
 
 import java.io.DataInput;
 import java.io.DataOutput;
