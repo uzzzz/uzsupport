@@ -7,16 +7,16 @@ import lombok.Data;
 @Data
 public class BaseJob {
 
-	@Value("${spring.datasource.driver-class-name}")
+	@Value("${spring.datasource.slave.driver-class-name}")
 	protected String dbdriver;
 
-	@Value("${spring.datasource.url}")
+	@Value("${spring.datasource.slave.url}")
 	protected String dburl;
 
-	@Value("${spring.datasource.username}")
+	@Value("${spring.datasource.slave.username}")
 	protected String dbuser;
 
-	@Value("${spring.datasource.password}")
+	@Value("${spring.datasource.slave.password}")
 	protected String dbpass;
 
 }

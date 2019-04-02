@@ -10,10 +10,14 @@ import org.uzzz.bean.Post;
 import org.uzzz.bean.PostAttribute;
 import org.uzzz.dao.PostAttributeDao;
 import org.uzzz.dao.PostDao;
+import org.uzzz.dao.slave.PostSlaveDao;
 import org.uzzz.service.PostService;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+	@Autowired
+	private PostSlaveDao postSlaveDao;
 
 	@Autowired
 	private PostDao postDao;
@@ -23,12 +27,12 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<Long> findAllIds() {
-		return postDao.findAllIds();
+		return postSlaveDao.findAllIds();
 	}
 
 	@Override
 	public List<String> findAllTitles() {
-		return postDao.findAllTitles();
+		return postSlaveDao.findAllTitles();
 	}
 
 	@Override
