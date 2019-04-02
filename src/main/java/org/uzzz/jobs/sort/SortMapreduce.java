@@ -8,21 +8,21 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class PostsSorter {
+public class SortMapreduce {
 
-	public static class PostsMapper extends Mapper<LongWritable, PostRecord, DoubleWritable, PostRecord> {
+	public static class PostsMapper extends Mapper<LongWritable, SortRecord, DoubleWritable, SortRecord> {
 		@Override
-		protected void map(LongWritable key, PostRecord value, Context context)
+		protected void map(LongWritable key, SortRecord value, Context context)
 				throws IOException, InterruptedException {
 			context.write(new DoubleWritable(value.score), value);
 		}
 	}
 
-	public static class PostsReducer extends Reducer<DoubleWritable, PostRecord, PostRecord, NullWritable> {
+	public static class PostsReducer extends Reducer<DoubleWritable, SortRecord, SortRecord, NullWritable> {
 		@Override
-		protected void reduce(DoubleWritable key, Iterable<PostRecord> values, Context context)
+		protected void reduce(DoubleWritable key, Iterable<SortRecord> values, Context context)
 				throws IOException, InterruptedException {
-			for (PostRecord v : values) {
+			for (SortRecord v : values) {
 				context.write(v, NullWritable.get());
 			}
 		}

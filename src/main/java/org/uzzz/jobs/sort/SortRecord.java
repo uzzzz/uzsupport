@@ -14,7 +14,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.lib.db.DBWritable;
 
-public class PostRecord implements DBWritable, Writable, Serializable {
+public class SortRecord implements DBWritable, Writable, Serializable {
 
 	private static final long serialVersionUID = 5283103382129613704L;
 

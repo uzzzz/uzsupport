@@ -10,25 +10,25 @@ import org.springframework.data.redis.core.ListOperations;
 import org.uzzz.RedisService;
 import org.uzzz.SupportApp;
 
-public class SortedOutputFormat extends FileOutputFormat<PostRecord, NullWritable> {
+public class SortOutputFormat extends FileOutputFormat<SortRecord, NullWritable> {
 
 	@Override
-	public RecordWriter<PostRecord, NullWritable> getRecordWriter(TaskAttemptContext job)
+	public RecordWriter<SortRecord, NullWritable> getRecordWriter(TaskAttemptContext job)
 			throws IOException, InterruptedException {
 		return new RedisRecordWriter(SupportApp.redisService());
 	}
 
-	protected static class RedisRecordWriter extends RecordWriter<PostRecord, NullWritable> {
+	protected static class RedisRecordWriter extends RecordWriter<SortRecord, NullWritable> {
 
-		private RedisService<PostRecord> redisService;
+		private RedisService<SortRecord> redisService;
 
-		public RedisRecordWriter(RedisService<PostRecord> redisService) {
+		public RedisRecordWriter(RedisService<SortRecord> redisService) {
 			this.redisService = redisService;
 		}
 
 		@Override
-		public void write(PostRecord key, NullWritable value) throws IOException, InterruptedException {
-			ListOperations<String, PostRecord> ops = (ListOperations<String, PostRecord>) redisService.opsForList();
+		public void write(SortRecord key, NullWritable value) throws IOException, InterruptedException {
+			ListOperations<String, SortRecord> ops = (ListOperations<String, SortRecord>) redisService.opsForList();
 			ops.rightPush("sorted_posts", key);
 		}
 

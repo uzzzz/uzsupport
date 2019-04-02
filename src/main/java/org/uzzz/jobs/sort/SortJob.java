@@ -12,8 +12,8 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.uzzz.jobs.BaseJob;
-import org.uzzz.jobs.sort.PostsSorter.PostsMapper;
-import org.uzzz.jobs.sort.PostsSorter.PostsReducer;
+import org.uzzz.jobs.sort.SortMapreduce.PostsMapper;
+import org.uzzz.jobs.sort.SortMapreduce.PostsReducer;
 
 @Component
 public class SortJob extends BaseJob {
@@ -34,23 +34,23 @@ public class SortJob extends BaseJob {
 		DBConfiguration.configureDB(conf, dbdriver, dburl, dbuser, dbpass);
 		Job job = Job.getInstance(conf, "uzblog.sort");
 
-		job.setJarByClass(PostsSorter.class);
+		job.setJarByClass(SortMapreduce.class);
 
 		job.setMapperClass(PostsMapper.class);
 		job.setMapOutputKeyClass(DoubleWritable.class);
-		job.setMapOutputValueClass(PostRecord.class);
+		job.setMapOutputValueClass(SortRecord.class);
 
-		job.setSortComparatorClass(PostRecord.ScoreComparator.class);
+		job.setSortComparatorClass(SortRecord.ScoreComparator.class);
 
 		job.setReducerClass(PostsReducer.class);
-		job.setOutputKeyClass(PostRecord.class);
+		job.setOutputKeyClass(SortRecord.class);
 		job.setOutputValueClass(NullWritable.class);
 
 		job.setInputFormatClass(DBInputFormat.class);
 		String[] input_fields = { "id", "views", "favors", "comments", "created" };
-		DBInputFormat.setInput(job, PostRecord.class, "mto_posts", null, "id", input_fields);
+		DBInputFormat.setInput(job, SortRecord.class, "mto_posts", null, "id", input_fields);
 
-		job.setOutputFormatClass(SortedOutputFormat.class);
+		job.setOutputFormatClass(SortOutputFormat.class);
 		FileOutputFormat.setOutputPath(job, new Path(sortOutputPath));
 
 		return job.waitForCompletion(true);
