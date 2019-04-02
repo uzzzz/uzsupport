@@ -1,6 +1,6 @@
 # logger, to see logback-spring.xml
 logging.level: INFO
-logging.level.app: INFO
+logging.level.app: DEBUG
 
 spring:
   datasource:

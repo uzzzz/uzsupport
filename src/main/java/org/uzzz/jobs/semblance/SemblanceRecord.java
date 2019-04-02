@@ -28,14 +28,21 @@ public class SemblanceRecord implements DBWritable, Writable, Serializable {
 	public void readFields(DataInput input) throws IOException {
 		this.id = input.readLong();
 		this.title = input.readUTF();
-		this.content = input.readUTF();
+
+		int size = input.readInt();
+		byte[] bytes = new byte[size];
+		input.readFully(bytes);
+		this.content = new String(bytes, "UTF-8");
 	}
 
 	@Override
 	public void write(DataOutput output) throws IOException {
 		output.writeLong(this.id);
 		output.writeUTF(this.title);
-		output.writeUTF(this.content);
+
+		byte[] bytes = this.content == null ? new byte[0] : this.content.getBytes("UTF-8");
+		output.writeInt(bytes.length);
+		output.write(bytes);
 	}
 
 	@Override

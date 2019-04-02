@@ -6,21 +6,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uzzz.jobs.duplicate.DuplicateJob;
+import org.uzzz.jobs.semblance.SemblanceJob;
 
 @Controller
-@RequestMapping("duplicate")
-public class DuplicateController {
+@RequestMapping("job")
+public class JobController {
 
 	@Autowired
-	private DuplicateJob job;
+	private DuplicateJob duplicateJob;
 
-	@GetMapping("start")
+	@Autowired
+	private SemblanceJob semblanceJob;
+
+	@GetMapping("duplicate")
 	@ResponseBody
-	public String start() {
+	public String duplicate() {
 		long a = System.currentTimeMillis();
 		boolean success = false;
 		try {
-			success = job.duplicate();
+			success = duplicateJob.duplicate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		long b = System.currentTimeMillis();
+		return success + ":" + (b - a) + "ms";
+	}
+
+	@GetMapping("semblance")
+	@ResponseBody
+	public String semblance() {
+		long a = System.currentTimeMillis();
+		boolean success = false;
+		try {
+			success = semblanceJob.semblance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

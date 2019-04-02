@@ -29,7 +29,7 @@ public class SemblanceJob extends BaseJob {
 		}
 
 		DBConfiguration.configureDB(conf, dbdriver, dburl, dbuser, dbpass);
-		Job job = Job.getInstance(conf, "uzblog.semblance");
+		Job job = Job.getInstance(conf, "uzshare.semblance");
 
 		job.setJarByClass(SemblanceMapreduce.class);
 
@@ -42,11 +42,13 @@ public class SemblanceJob extends BaseJob {
 		job.setOutputValueClass(SemblanceRecord.class);
 
 		job.setInputFormatClass(DBInputFormat.class);
-		String sql = "select p.id as id, p.title as title ,a.content as content" //
-				+ "	from mto_posts p" //
-				+ "	left join mto_posts_attribute a" //
-				+ "	on p.id = a.id;";
-		DBInputFormat.setInput(job, SemblanceRecord.class, sql, null);
+
+		String sql = "select mto_posts.id, mto_posts.title, mto_posts_attribute.content" //
+				+ "	from mto_posts" //
+				+ " left join mto_posts_attribute" //
+				+ "	on mto_posts.id = mto_posts_attribute.id";
+
+		DBInputFormat.setInput(job, SemblanceRecord.class, sql, "select count(1) from mto_posts");
 
 		FileOutputFormat.setOutputPath(job, new Path(semblanceOutputPath));
 
