@@ -1,0 +1,16 @@
+# logger, to see logback-spring.xml
+logging.level: INFO
+logging.level.app: DEBUG
+
+spring:
+  datasource:
+    master:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://106.12.207.243:3306/uzblog?useSSL=false&characterEncoding=utf8
+      username: root
+      password: Abc1234567!
+    slave:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://106.13.119.103:3306/uzblog?useSSL=false&characterEncoding=utf8
+      username: root
+      password: Feng!2019
