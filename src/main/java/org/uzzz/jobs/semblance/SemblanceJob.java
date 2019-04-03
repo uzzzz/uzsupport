@@ -1,5 +1,6 @@
 package org.uzzz.jobs.semblance;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -59,11 +60,35 @@ public class SemblanceJob extends BaseJob {
 	}
 
 	public SemblanceRecord similar(long id) {
+		File file = new File(semblanceOutputPath);
+		return readSemblanceRecord(id, file);
+	}
+
+	private SemblanceRecord readSemblanceRecord(long id, File file) {
+
+		if (file == null) {
+			return null;
+		}
+
+		if (file.isFile()) {
+			return readSemblanceRecord(id, new Path(file.getAbsolutePath()));
+		} else if (file.isDirectory()) {
+			File[] children = file.listFiles();
+			for (File child : children) {
+				SemblanceRecord sr = readSemblanceRecord(id, child);
+				if (sr != null) {
+					return sr;
+				}
+			}
+		}
+		return null;
+	}
+
+	private SemblanceRecord readSemblanceRecord(long id, Path path) {
 		SequenceFile.Reader reader = null;
 		try {
 			Configuration conf = new Configuration();
 			FileSystem fs = FileSystem.get(conf);
-			Path path = new Path(semblanceOutputPath + "part-r-00000");
 			reader = new SequenceFile.Reader(fs, path, conf);
 			LongWritable key = new LongWritable();
 			SemblanceRecord value = new SemblanceRecord();
