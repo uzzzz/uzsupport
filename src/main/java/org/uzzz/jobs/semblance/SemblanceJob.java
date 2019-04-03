@@ -1,13 +1,17 @@
 package org.uzzz.jobs.semblance;
 
+import java.io.IOException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.db.DBConfiguration;
 import org.apache.hadoop.mapreduce.lib.db.DBInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.uzzz.jobs.BaseJob;
@@ -42,16 +46,42 @@ public class SemblanceJob extends BaseJob {
 		job.setOutputValueClass(SemblanceRecord.class);
 
 		job.setInputFormatClass(DBInputFormat.class);
-
 		String sql = "select mto_posts.id, mto_posts.title, mto_posts_attribute.content" //
 				+ "	from mto_posts" //
 				+ " left join mto_posts_attribute" //
 				+ "	on mto_posts.id = mto_posts_attribute.id";
-
 		DBInputFormat.setInput(job, SemblanceRecord.class, sql, "select count(1) from mto_posts");
 
+		job.setOutputFormatClass(SequenceFileOutputFormat.class);
 		FileOutputFormat.setOutputPath(job, new Path(semblanceOutputPath));
 
 		return job.waitForCompletion(true);
+	}
+
+	public SemblanceRecord similar(long id) {
+		SequenceFile.Reader reader = null;
+		try {
+			Configuration conf = new Configuration();
+			FileSystem fs = FileSystem.get(conf);
+			Path path = new Path(semblanceOutputPath + "part-r-00000");
+			reader = new SequenceFile.Reader(fs, path, conf);
+			LongWritable key = new LongWritable();
+			SemblanceRecord value = new SemblanceRecord();
+			while (reader.next(key, value)) {
+				if (key.get() == id) {
+					return value;
+				}
+			}
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				reader.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
