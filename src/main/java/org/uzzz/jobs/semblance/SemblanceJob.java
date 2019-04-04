@@ -15,6 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.uzzz.SimHash;
 import org.uzzz.jobs.BaseJob;
 
 @Component
@@ -59,23 +60,23 @@ public class SemblanceJob extends BaseJob {
 		return job.waitForCompletion(true);
 	}
 
-	public SemblanceRecord similar(long id) {
+	public SemblanceRecord similar(String title, String content) {
 		File file = new File(semblanceOutputPath);
-		return readSemblanceRecord(id, file);
+		return forEachSemblanceRecord(title, content, file);
 	}
 
-	private SemblanceRecord readSemblanceRecord(long id, File file) {
+	private SemblanceRecord forEachSemblanceRecord(String title, String content, File file) {
 
 		if (file == null) {
 			return null;
 		}
 
 		if (file.isFile()) {
-			return readSemblanceRecord(id, new Path(file.getAbsolutePath()));
+			return forEachSemblanceRecord(title, content, new Path(file.getAbsolutePath()));
 		} else if (file.isDirectory()) {
 			File[] children = file.listFiles();
 			for (File child : children) {
-				SemblanceRecord sr = readSemblanceRecord(id, child);
+				SemblanceRecord sr = forEachSemblanceRecord(title, content, child);
 				if (sr != null) {
 					return sr;
 				}
@@ -84,7 +85,7 @@ public class SemblanceJob extends BaseJob {
 		return null;
 	}
 
-	private SemblanceRecord readSemblanceRecord(long id, Path path) {
+	private SemblanceRecord forEachSemblanceRecord(String title, String content, Path path) {
 		SequenceFile.Reader reader = null;
 		try {
 			Configuration conf = new Configuration();
@@ -93,7 +94,7 @@ public class SemblanceJob extends BaseJob {
 			LongWritable key = new LongWritable();
 			SemblanceRecord value = new SemblanceRecord();
 			while (reader.next(key, value)) {
-				if (key.get() == id) {
+				if (compare(title, content, value)) {
 					return value;
 				}
 			}
@@ -108,5 +109,33 @@ public class SemblanceJob extends BaseJob {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private boolean compare(String title, String content, SemblanceRecord sr) {
+
+		long a = System.currentTimeMillis();
+
+		SimHash title1hash = new SimHash(title, 64);
+		SimHash title2hash = new SimHash(sr.getTitle(), 64);
+		SimHash content1hash = new SimHash(content, 64);
+		SimHash content2hash = new SimHash(sr.getContent(), 64);
+
+		int titleHamming = title1hash.hammingDistance(title2hash);
+		double titleSemblance = title1hash.getSemblance(title2hash);
+		int contentHamming = content1hash.hammingDistance(content2hash);
+		double contentSemblance = content1hash.getSemblance(content2hash);
+
+		long b = System.currentTimeMillis();
+		StringBuffer sb = new StringBuffer("\n");
+		sb.append("耗时:").append(b - a).append("ms\n") //
+				.append("id1:").append(title).append("\n") //
+				.append("id2:").append(sr.getTitle()).append("\n") //
+				.append("标题-海明距离是:").append(titleHamming).append("\n") //
+				.append("标题-文本相似度:").append(titleSemblance).append("\n")//
+				.append("内容-海明距离是:").append(contentHamming).append("\n") //
+				.append("内容-文本相似度:").append(contentSemblance).append("\n");
+		System.out.println(sb.toString());
+
+		return titleHamming == 0 || contentHamming == 0;
 	}
 }
