@@ -13,10 +13,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.uzzz.jobs.semblance.SemblanceJob;
 import org.uzzz.service.PostService;
 
 @Component
 public class AsyncTask {
+
+	@Autowired
+	private SemblanceJob semblanceJob;
 
 	@Autowired
 	private PostService postService;
@@ -43,6 +47,12 @@ public class AsyncTask {
 
 	// @Async
 	public long postBlog(int cid, String title, String c, String thumbnail) {
+		try {
+			if (semblanceJob.similar(title, c)) {
+				return 0;
+			}
+		} catch (Exception e) {
+		}
 		try {
 			int uid = random(2, 200);
 			HttpHeaders h = new HttpHeaders();

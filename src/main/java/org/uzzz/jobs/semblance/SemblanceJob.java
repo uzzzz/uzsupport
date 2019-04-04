@@ -60,32 +60,32 @@ public class SemblanceJob extends BaseJob {
 		return job.waitForCompletion(true);
 	}
 
-	public SemblanceRecord similar(String title, String content) {
+	public boolean similar(String title, String content) {
 		File file = new File(semblanceOutputPath);
-		return forEachSemblanceRecord(title, content, file);
+		return similarSemblanceRecord(title, content, file);
 	}
 
-	private SemblanceRecord forEachSemblanceRecord(String title, String content, File file) {
+	private boolean similarSemblanceRecord(String title, String content, File file) {
 
 		if (file == null) {
-			return null;
+			return false;
 		}
 
 		if (file.isFile()) {
-			return forEachSemblanceRecord(title, content, new Path(file.getAbsolutePath()));
+			return similarSemblanceRecord(title, content, new Path(file.getAbsolutePath()));
 		} else if (file.isDirectory()) {
 			File[] children = file.listFiles();
 			for (File child : children) {
-				SemblanceRecord sr = forEachSemblanceRecord(title, content, child);
-				if (sr != null) {
-					return sr;
+				boolean b = similarSemblanceRecord(title, content, child);
+				if (b) {
+					return b;
 				}
 			}
 		}
-		return null;
+		return false;
 	}
 
-	private SemblanceRecord forEachSemblanceRecord(String title, String content, Path path) {
+	private boolean similarSemblanceRecord(String title, String content, Path path) {
 		SequenceFile.Reader reader = null;
 		try {
 			Configuration conf = new Configuration();
@@ -95,13 +95,13 @@ public class SemblanceJob extends BaseJob {
 			SemblanceRecord value = new SemblanceRecord();
 			while (reader.next(key, value)) {
 				if (compare(title, content, value)) {
-					return value;
+					return true;
 				}
 			}
-			return null;
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
+			return false;
 		} finally {
 			try {
 				reader.close();
@@ -111,6 +111,7 @@ public class SemblanceJob extends BaseJob {
 		}
 	}
 
+	// true:相似；false:不相似
 	private boolean compare(String title, String content, SemblanceRecord sr) {
 
 		long a = System.currentTimeMillis();
