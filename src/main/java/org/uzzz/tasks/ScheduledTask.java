@@ -43,25 +43,25 @@ public class ScheduledTask {
 	@Autowired
 	private PostService postService;
 
-	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 10)
+	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		crawler.blockchain();
 	}
 
-	@Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60 * 10)
+	@Scheduled(initialDelay = 1000 * 60 * 10, fixedDelay = 1000 * 60 * 60)
 	public void crawl_careerlife() throws IOException {
 		log.warn("crawl careerlife @Scheduled");
 		crawler.careerlife();
 	}
 
-	@Scheduled(initialDelay = 3000, fixedDelay = 1000 * 60 * 10)
+	@Scheduled(initialDelay = 1000 * 60 * 20, fixedDelay = 1000 * 60 * 60)
 	public void crawl_ai() throws IOException {
 		log.warn("crawl ai @Scheduled");
 		crawler.ai();
 	}
 
-	@Scheduled(initialDelay = 100 * 1000, fixedDelay = 1000 * 60 * 60 * 12)
+	@Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
 		String ok = _rewritesitemapxml(sitemapSites);
@@ -107,7 +107,7 @@ public class ScheduledTask {
 		return "OK";
 	}
 
-	@Scheduled(initialDelay = 10 * 60 * 1000, fixedDelay = 1000 * 60 * 60 * 12)
+	@Scheduled(initialDelay = 1000 * 60 * 40, fixedDelay = 1000 * 60 * 60 * 12)
 	public void post_sort() {
 		try {
 			jobs.sort();
