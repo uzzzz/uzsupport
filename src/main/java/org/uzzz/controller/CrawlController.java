@@ -26,9 +26,9 @@ public class CrawlController {
 	public String url(String url) throws IOException {
 		long id = crawler.url(url);
 		if (id == 0) {
-			return "redirect:https://blog.uzzz.org.cn/";
+			return "redirect:https://uzzz.org.cn/";
 		} else {
-			return "redirect:https://blog.uzzz.org.cn/view/" + 0;
+			return "redirect:https://uzzz.org.cn/view/" + 0;
 		}
 	}
 }

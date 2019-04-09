@@ -74,8 +74,9 @@ public class CsdnCrawler {
 
 				// post uzzzblog
 				long id = task.postBlog(cid, title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
-
-				gitTask.writeGit(id, title, c, time);
+				if (id > 0) {
+					gitTask.writeGit(id, title, c, time);
+				}
 			} catch (IOException ioe) {
 			}
 		}
@@ -111,13 +112,12 @@ public class CsdnCrawler {
 
 			// post uzzzblog
 			id = task.syncPostBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
-
-			gitTask.writeGit(id, title, c, time);
-			gitTask.commitAndPushGit();
+			if (id > 0) {
+				gitTask.writeGit(id, title, c, time);
+				gitTask.commitAndPushGit();
+			}
 		} catch (IOException ioe) {
 		}
-
 		return id;
 	}
-
 }

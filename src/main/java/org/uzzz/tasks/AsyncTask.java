@@ -47,12 +47,12 @@ public class AsyncTask {
 
 	// @Async
 	public long postBlog(int cid, String title, String c, String thumbnail) {
-		try {
-			if (semblanceJob.similar(title, c)) {
-				return 0;
-			}
-		} catch (Exception e) {
-		}
+//		try {
+//			if (semblanceJob.similar(title, c)) {
+//				return 0;
+//			}
+//		} catch (Exception e) {
+//		}
 		try {
 			int uid = random(2, 200);
 			HttpHeaders h = new HttpHeaders();
@@ -69,7 +69,6 @@ public class AsyncTask {
 			HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, h);
 			// 执行HTTP请求
 			long id = rest.postForObject("https://blog.uzzz.org.cn/api/post", entity, Long.class);
-			postBaiduForOrg(id);
 			postBaiduForOrgCn(id);
 			return id;
 		} catch (Exception e) {
@@ -82,27 +81,12 @@ public class AsyncTask {
 		return postBlog(1, title, c, thumbnail);
 	}
 
-	private void postBaiduForOrg(long id) {
-		try { // post baidu
-			String postUrl = "http://data.zz.baidu.com/urls?site=https://blog.uzzz.org&token=pJ67TFnK02hkMHlt";
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.TEXT_PLAIN);
-			String content = "https://blog.uzzz.org/view/" + id;
-			HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
-			// 执行HTTP请求
-			String ret = rest.postForObject(postUrl, requestEntity, String.class);
-			System.out.println("post baidu : " + ret + " (" + content + ")");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void postBaiduForOrgCn(long id) {
 		try { // post baidu
-			String postUrl = "http://data.zz.baidu.com/urls?site=https://blog.uzzz.org.cn&token=HpJK9usLd5M83kzx";
+			String postUrl = "http://data.zz.baidu.com/urls?site=https://uzzz.org.cn&token=HpJK9usLd5M83kzx";
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.TEXT_PLAIN);
-			String content = "https://blog.uzzz.org.cn/view/" + id;
+			String content = "https://uzzz.org.cn/view/" + id;
 			HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
 			// 执行HTTP请求
 			String ret = rest.postForObject(postUrl, requestEntity, String.class);
