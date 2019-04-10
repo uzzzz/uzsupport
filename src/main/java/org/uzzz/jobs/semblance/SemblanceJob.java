@@ -60,6 +60,30 @@ public class SemblanceJob extends BaseJob {
 		return job.waitForCompletion(true);
 	}
 
+	public void writePost(long id, String title, String c) {
+		SequenceFile.Writer writer = null;
+		try {
+			Configuration conf = new Configuration();
+			FileSystem fs = FileSystem.get(conf);
+			Path path = new Path(semblanceOutputPath + id);
+			writer = new SequenceFile.Writer(fs, conf, path, LongWritable.class, SemblanceRecord.class);
+			LongWritable key = new LongWritable(id);
+			SemblanceRecord value = new SemblanceRecord();
+			value.setId(id);
+			value.setTitle(title);
+			value.setContent(c);
+			writer.append(key, value);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				writer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public boolean similar(String title, String content) {
 		File file = new File(semblanceOutputPath);
 		return similarSemblanceRecord(title, content, file);

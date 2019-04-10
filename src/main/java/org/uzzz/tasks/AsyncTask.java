@@ -70,6 +70,12 @@ public class AsyncTask {
 			// 执行HTTP请求
 			long id = rest.postForObject("https://blog.uzzz.org.cn/api/post", entity, Long.class);
 			postBaiduForOrgCn(id);
+
+			try {
+				semblanceJob.writePost(id, title, c);
+			} catch (Exception e) {
+			}
+
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
