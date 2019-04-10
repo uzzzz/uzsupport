@@ -47,12 +47,12 @@ public class AsyncTask {
 
 	// @Async
 	public long postBlog(int cid, String title, String c, String thumbnail) {
-//		try {
-//			if (semblanceJob.similar(title, c)) {
-//				return 0;
-//			}
-//		} catch (Exception e) {
-//		}
+		try {
+			if (semblanceJob.similar(title, c)) {
+				return 0;
+			}
+		} catch (Exception e) {
+		}
 		try {
 			int uid = random(2, 200);
 			HttpHeaders h = new HttpHeaders();
