@@ -28,7 +28,7 @@ public class CrawlController {
 		if (id == 0) {
 			return "redirect:https://uzzz.org.cn/";
 		} else {
-			return "redirect:https://uzzz.org.cn/view/" + 0;
+			return "redirect:https://uzzz.org.cn/view/" + id;
 		}
 	}
 }
