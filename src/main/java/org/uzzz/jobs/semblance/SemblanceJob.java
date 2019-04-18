@@ -138,29 +138,27 @@ public class SemblanceJob extends BaseJob {
 	// true:相似；false:不相似
 	private boolean compare(String title, String content, SemblanceRecord sr) {
 
-		long a = System.currentTimeMillis();
+//		long a = System.currentTimeMillis();
 
 		SimHash title1hash = new SimHash(title, 64);
 		SimHash title2hash = new SimHash(sr.getTitle(), 64);
 //		SimHash content1hash = new SimHash(content, 64);
 //		SimHash content2hash = new SimHash(sr.getContent(), 64);
-
 		int titleHamming = title1hash.hammingDistance(title2hash);
-		double titleSemblance = title1hash.getSemblance(title2hash);
+//		double titleSemblance = title1hash.getSemblance(title2hash);
 //		int contentHamming = content1hash.hammingDistance(content2hash);
 //		double contentSemblance = content1hash.getSemblance(content2hash);
 
-		long b = System.currentTimeMillis();
-		StringBuffer sb = new StringBuffer("\n");
-		sb.append("耗时:").append(b - a).append("ms\n") //
-				.append("id1:").append(title).append("\n") //
-				.append("id2:").append(sr.getTitle()).append("\n") //
-				.append("标题-海明距离是:").append(titleHamming).append("\n") //
-				.append("标题-文本相似度:").append(titleSemblance).append("\n")//
-		// .append("内容-海明距离是:").append(contentHamming).append("\n") //
-		// .append("内容-文本相似度:").append(contentSemblance).append("\n")
-		;
-		System.out.println(sb.toString());
+//		long b = System.currentTimeMillis();
+//		StringBuffer sb = new StringBuffer("\n");
+//		sb.append("耗时:").append(b - a).append("ms\n") //
+//				.append("id1:").append(title).append("\n") //
+//				.append("id2:").append(sr.getTitle()).append("\n") //
+//				.append("标题-海明距离是:").append(titleHamming).append("\n") //
+//				.append("标题-文本相似度:").append(titleSemblance).append("\n")//
+//				.append("内容-海明距离是:").append(contentHamming).append("\n") //
+//				.append("内容-文本相似度:").append(contentSemblance).append("\n");
+//		System.out.println(sb.toString());
 
 		return titleHamming == 0; // || contentHamming == 0;
 	}
