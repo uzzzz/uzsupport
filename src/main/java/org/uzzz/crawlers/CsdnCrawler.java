@@ -38,6 +38,11 @@ public class CsdnCrawler {
 		return crawl(4, url);
 	}
 
+	public String datacloud() throws IOException {
+		String url = "https://www.csdn.net/nav/cloud";
+		return crawl(5, url);
+	}
+
 	private String crawl(int cid, String url) throws IOException {
 
 		long start = System.currentTimeMillis();

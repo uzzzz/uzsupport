@@ -61,6 +61,12 @@ public class ScheduledTask {
 		crawler.ai();
 	}
 
+	@Scheduled(initialDelay = 1000 * 60 * 25, fixedDelay = 1000 * 60 * 60)
+	public void crawl_datacloud() throws IOException {
+		log.warn("crawl datacloud @Scheduled");
+		crawler.datacloud();
+	}
+
 	@Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
