@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,11 +12,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.uzzz.bean.Referer;
+import org.uzzz.dao.slave.RefererSlaveDao;
 import org.uzzz.tasks.AsyncTask;
 import org.uzzz.tasks.GitTask;
 
 @Component
 public class CsdnCrawler {
+
+	@Autowired
+	private RefererSlaveDao refererSlaveDao;
 
 	@Autowired
 	private AsyncTask task;
@@ -65,13 +71,7 @@ public class CsdnCrawler {
 
 				Elements article = _doc.select("article");
 				article.select("img").stream().parallel().forEach(element -> {
-					String src = element.absUrl("src");
-					if (src != null //
-							&& (src.startsWith("https://img-blog.csdn.net")
-									|| src.startsWith("https://img-blog.csdnimg.cn"))) {
-						src = "https://blog.uzzz.org.cn/_p?" + src;
-						element.attr("src", src);
-					}
+					String src = imgUrl(element);
 					thumbnails.add(src);
 				});
 				article.select("script, #btn-readmore").remove();
@@ -103,13 +103,7 @@ public class CsdnCrawler {
 			List<String> thumbnails = new ArrayList<>();
 
 			article.select("img").stream().parallel().forEach(element -> {
-				String src = element.absUrl("src");
-				if (src != null //
-						&& (src.startsWith("https://img-blog.csdn.net")
-								|| src.startsWith("https://img-blog.csdnimg.cn"))) {
-					src = "https://blog.uzzz.org.cn/_p?" + src;
-					element.attr("src", src);
-				}
+				String src = imgUrl(element);
 				thumbnails.add(src);
 			});
 			article.select("script, #btn-readmore").remove();
@@ -125,4 +119,29 @@ public class CsdnCrawler {
 		}
 		return id;
 	}
+
+	private String imgUrl(Element element) {
+
+		String src = element.absUrl("src");
+
+		if (StringUtils.isNotBlank(src)) {
+			List<Referer> referers = refererSlaveDao.findAll();
+			boolean b = false;
+			for (Referer r : referers) {
+				String host = r.getHost();
+				if (src.startsWith("http://" + host) //
+						|| src.startsWith("https://" + host)) {
+					b = true;
+					break;
+				}
+			}
+			if (b) {
+				src = "https://uzshare.com/_p?" + src;
+				element.attr("src", src);
+			}
+		}
+
+		return src;
+	}
+
 }
