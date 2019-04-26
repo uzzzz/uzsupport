@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.uzzz.jobs.semblance.SemblanceJob;
+import org.uzzz.jobs.semblance.SemblanceTitleJob;
 import org.uzzz.service.PostService;
 
 @Component
 public class AsyncTask {
 
 	@Autowired
-	private SemblanceJob semblanceJob;
+	private SemblanceTitleJob semblanceJob;
 
 	@Autowired
 	private PostService postService;

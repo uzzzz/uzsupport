@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uzzz.RedisService;
 import org.uzzz.jobs.duplicate.DuplicateJob;
-import org.uzzz.jobs.semblance.SemblanceJob;
+import org.uzzz.jobs.semblance.SemblanceTitleJob;
 import org.uzzz.jobs.sort.SortJob;
 import org.uzzz.jobs.sort.SortRecord;
 
@@ -30,7 +30,7 @@ public class JobController {
 	private DuplicateJob duplicateJob;
 
 	@Autowired
-	private SemblanceJob semblanceJob;
+	private SemblanceTitleJob semblanceJob;
 
 	// posts结算分值并写入redis
 	@GetMapping("sort")

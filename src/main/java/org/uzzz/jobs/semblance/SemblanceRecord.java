@@ -22,17 +22,17 @@ public class SemblanceRecord implements DBWritable, Writable, Serializable {
 
 	protected String title;
 
-	protected String content;
+//	protected String content;
 
 	@Override
 	public void readFields(DataInput input) throws IOException {
 		this.id = input.readLong();
 		this.title = input.readUTF();
 
-		int size = input.readInt();
-		byte[] bytes = new byte[size];
-		input.readFully(bytes);
-		this.content = new String(bytes, "UTF-8");
+//		int size = input.readInt();
+//		byte[] bytes = new byte[size];
+//		input.readFully(bytes);
+//		this.content = new String(bytes, "UTF-8");
 	}
 
 	@Override
@@ -40,22 +40,22 @@ public class SemblanceRecord implements DBWritable, Writable, Serializable {
 		output.writeLong(this.id);
 		output.writeUTF(this.title);
 
-		byte[] bytes = this.content == null ? new byte[0] : this.content.getBytes("UTF-8");
-		output.writeInt(bytes.length);
-		output.write(bytes);
+//		byte[] bytes = this.content == null ? new byte[0] : this.content.getBytes("UTF-8");
+//		output.writeInt(bytes.length);
+//		output.write(bytes);
 	}
 
 	@Override
 	public void readFields(ResultSet set) throws SQLException {
 		this.id = set.getLong(1);
 		this.title = set.getString(2);
-		this.content = set.getString(3);
+//		this.content = set.getString(3);
 	}
 
 	@Override
 	public void write(PreparedStatement preparedStatement) throws SQLException {
 		preparedStatement.setLong(1, id);
 		preparedStatement.setString(2, title);
-		preparedStatement.setString(3, content);
+//		preparedStatement.setString(3, content);
 	}
 }

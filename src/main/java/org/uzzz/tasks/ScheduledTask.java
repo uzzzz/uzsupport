@@ -82,7 +82,8 @@ public class ScheduledTask {
 		}
 		for (String host : hosts) {
 			String baseUrl = "https://" + host;
-			String localRoot = uzshareStaticPath + host + "/";
+			// String localRoot = uzshareStaticPath + host + "/";
+			String localRoot = uzshareStaticPath;
 			WebSitemapGenerator wsgGzip = WebSitemapGenerator.builder(baseUrl, new File(localRoot)).gzip(true).build();
 
 			for (Long id : ids) {
