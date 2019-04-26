@@ -29,29 +29,27 @@ public class CsdnCrawler {
 	@Autowired
 	private GitTask gitTask;
 
-	public String blockchain() throws IOException {
+	public void blockchain() throws IOException {
 		String url = "https://www.csdn.net/nav/blockchain";
-		return crawl(2, url);
+		crawl(2, url);
 	}
 
-	public String careerlife() throws IOException {
+	public void careerlife() throws IOException {
 		String url = "https://www.csdn.net/nav/career";
-		return crawl(3, url);
+		crawl(3, url);
 	}
 
-	public String ai() throws IOException {
+	public void ai() throws IOException {
 		String url = "https://www.csdn.net/nav/ai";
-		return crawl(4, url);
+		crawl(4, url);
 	}
 
-	public String datacloud() throws IOException {
+	public void datacloud() throws IOException {
 		String url = "https://www.csdn.net/nav/cloud";
-		return crawl(5, url);
+		crawl(5, url);
 	}
 
-	private String crawl(int cid, String url) throws IOException {
-
-		long start = System.currentTimeMillis();
+	private void crawl(int cid, String url) throws IOException {
 
 		Connection conn = Jsoup.connect(url);
 		conn.header("Cookie", "uuid_tt_dd=83050375453476967274_20181022;");
@@ -85,11 +83,9 @@ public class CsdnCrawler {
 			} catch (IOException ioe) {
 			}
 		}
-		long end = System.currentTimeMillis();
 
-		String git = gitTask.commitAndPushGit();
+		gitTask.commitAndPushGit();
 
-		return "crawler OK:" + (end - start) + "ms<br />" + git;
 	}
 
 	public long url(String url) throws IOException {
