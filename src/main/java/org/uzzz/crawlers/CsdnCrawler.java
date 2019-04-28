@@ -75,7 +75,7 @@ public class CsdnCrawler {
 				article.select("script, #btn-readmore").remove();
 				String c = article.html();
 
-				// post uzzzblog
+				// post uzshare
 				long id = task.postBlog(cid, title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
 				if (id > 0) {
 					gitTask.writeGit(id, title, c, time);

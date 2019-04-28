@@ -49,6 +49,7 @@ public class GitTask {
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 
 		try { // write uzzz.org
@@ -59,6 +60,7 @@ public class GitTask {
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 	}
 
