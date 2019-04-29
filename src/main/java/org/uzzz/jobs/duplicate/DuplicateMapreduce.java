@@ -34,12 +34,12 @@ public class DuplicateMapreduce {
 			}
 			if (list.size() > 0) {
 				context.write(key, new IntWritable(list.size()));
+//				try {
+//					SupportApp.context.getBean(AsyncTask.class).deletePost(list);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
 			}
-//			try {
-//				SupportApp.context.getBean(AsyncTask.class).deletePost(list);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
 		}
 	}
 }
