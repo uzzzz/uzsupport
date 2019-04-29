@@ -8,6 +8,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -43,6 +44,11 @@ public class AsyncTask {
 			return random(min, max);
 		}
 		return s;
+	}
+
+	@Async
+	public void asyncRun(Runnable r) {
+		r.run();
 	}
 
 	// @Async

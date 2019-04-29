@@ -9,8 +9,6 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.uzzz.SupportApp;
-import org.uzzz.tasks.AsyncTask;
 
 public class DuplicateMapreduce {
 
@@ -34,13 +32,14 @@ public class DuplicateMapreduce {
 				}
 				size++;
 			}
-			context.write(key, new IntWritable(list.size()));
-
-			try {
-				SupportApp.context.getBean(AsyncTask.class).deletePost(list);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (list.size() > 0) {
+				context.write(key, new IntWritable(list.size()));
 			}
+//			try {
+//				SupportApp.context.getBean(AsyncTask.class).deletePost(list);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 }

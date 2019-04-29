@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +22,8 @@ import org.uzzz.tasks.GitTask;
 @Component
 public class CsdnCrawler {
 
+	private static Log log = LogFactory.getLog(CsdnCrawler.class);
+
 	@Autowired
 	private RefererSlaveDao refererSlaveDao;
 
@@ -28,6 +32,21 @@ public class CsdnCrawler {
 
 	@Autowired
 	private GitTask gitTask;
+
+	public void crawl_all() {
+		task.asyncRun(() -> {
+			log.warn("crawl_all");
+			try {
+				blockchain();
+				careerlife();
+				ai();
+				datacloud();
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.error(e.getMessage(), e);
+			}
+		});
+	}
 
 	public void blockchain() throws IOException {
 		String url = "https://www.csdn.net/nav/blockchain";
@@ -52,7 +71,7 @@ public class CsdnCrawler {
 	private void crawl(int cid, String url) throws IOException {
 
 		Connection conn = Jsoup.connect(url);
-		conn.header("Cookie", "uuid_tt_dd=83050375453476967274_20181022;");
+		conn.header("Cookie", "uuid_tt_dd=10_6645302180-1555902674734-219524;");
 		Document doc = conn.get();
 
 		Elements elements = doc.select("#feedlist_id li[data-type=blog]");
@@ -72,7 +91,7 @@ public class CsdnCrawler {
 					String src = imgUrl(element);
 					thumbnails.add(src);
 				});
-				article.select("script, #btn-readmore").remove();
+				article.select("script, #btn-readmore, .article-copyright").remove();
 				String c = article.html();
 
 				// post uzshare
@@ -102,7 +121,7 @@ public class CsdnCrawler {
 				String src = imgUrl(element);
 				thumbnails.add(src);
 			});
-			article.select("script, #btn-readmore").remove();
+			article.select("script, #btn-readmore, .article-copyright").remove();
 			String c = article.html();
 
 			// post uzzzblog

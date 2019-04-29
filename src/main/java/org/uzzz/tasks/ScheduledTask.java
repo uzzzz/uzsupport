@@ -43,25 +43,25 @@ public class ScheduledTask {
 	@Autowired
 	private PostService postService;
 
-	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 5)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		crawler.blockchain();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 10, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 5, fixedDelay = 1000 * 60 * 5)
 	public void crawl_careerlife() throws IOException {
 		log.warn("crawl careerlife @Scheduled");
 		crawler.careerlife();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 20, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 10, fixedDelay = 1000 * 60 * 5)
 	public void crawl_ai() throws IOException {
 		log.warn("crawl ai @Scheduled");
 		crawler.ai();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 25, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 15, fixedDelay = 1000 * 60 * 5)
 	public void crawl_datacloud() throws IOException {
 		log.warn("crawl datacloud @Scheduled");
 		crawler.datacloud();
