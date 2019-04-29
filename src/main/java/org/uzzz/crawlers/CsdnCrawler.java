@@ -49,23 +49,36 @@ public class CsdnCrawler {
 	}
 
 	public void blockchain() throws IOException {
+		// 区块链
 		String url = "https://www.csdn.net/nav/blockchain";
 		crawl(2, url);
 	}
 
 	public void careerlife() throws IOException {
-		String url = "https://www.csdn.net/nav/career";
-		crawl(3, url);
+		// 程序人生，其他
+		String[] urls = new String[] { "https://www.csdn.net/nav/career", //
+				"https://www.csdn.net/nav/other" };
+		crawl_multiple(3, urls);
 	}
 
 	public void ai() throws IOException {
+		// 人工智能
 		String url = "https://www.csdn.net/nav/ai";
 		crawl(4, url);
 	}
 
 	public void datacloud() throws IOException {
+		// 云计算/大数据
 		String url = "https://www.csdn.net/nav/cloud";
 		crawl(5, url);
+	}
+
+	private void crawl_multiple(int cid, String... urls) throws IOException {
+		if (urls != null && urls.length > 0) {
+			for (String url : urls) {
+				crawl(cid, url);
+			}
+		}
 	}
 
 	private void crawl(int cid, String url) throws IOException {
