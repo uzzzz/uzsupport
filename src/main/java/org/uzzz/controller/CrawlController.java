@@ -32,4 +32,11 @@ public class CrawlController {
 			return "redirect:https://uzshare.com/view/" + id;
 		}
 	}
+
+	@GetMapping("search")
+	@ResponseBody
+	public String search(String key) throws IOException {
+		crawler.crawl_search(key);
+		return "OK";
+	}
 }

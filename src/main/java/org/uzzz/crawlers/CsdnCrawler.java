@@ -18,6 +18,7 @@ import org.uzzz.bean.Referer;
 import org.uzzz.dao.slave.RefererSlaveDao;
 import org.uzzz.tasks.AsyncTask;
 import org.uzzz.tasks.GitTask;
+import org.uzzz.utils.Utils;
 
 @Component
 public class CsdnCrawler {
@@ -121,6 +122,10 @@ public class CsdnCrawler {
 	}
 
 	public long url(String url) throws IOException {
+		return url(url, "");
+	}
+
+	public long url(String url, String tags) throws IOException {
 		long id = 0;
 		try {
 			Document _doc = Jsoup.connect(url).get();
@@ -137,8 +142,8 @@ public class CsdnCrawler {
 			article.select("script, #btn-readmore, .article-copyright").remove();
 			String c = article.html();
 
-			// post uzzzblog
-			id = task.syncPostBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "");
+			// post uzshare
+			id = task.postBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "", tags);
 			if (id > 0) {
 				gitTask.writeGit(id, title, c, time);
 				gitTask.commitAndPushGit();
@@ -146,6 +151,32 @@ public class CsdnCrawler {
 		} catch (IOException ioe) {
 		}
 		return id;
+	}
+
+	public void crawl_search(final String key) throws IOException {
+		task.asyncRun(() -> {
+			String urlTemp = "https://so.csdn.net/so/search/s.do?t=blog&q=%s&p=%d";
+			for (int p = 1; p <= 5; p++) {
+				try {
+					String url = String.format(urlTemp, key, p);
+					Connection conn = Jsoup.connect(url);
+					conn.header("Cookie", "uuid_tt_dd=10_6645302180-1557902675732-219574;");
+					Document doc = conn.get();
+
+					Elements elements = doc.select("dl.search-list");
+					for (Element e : elements) {
+						String value = e.attr("data-track-click");
+						String article_url = Utils.substring(value, "\"con\":\"", "\"}");
+						if (article_url != null && article_url.startsWith("https://blog.csdn.net")) {
+							url(article_url, key);
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					log.error(e.getMessage(), e);
+				}
+			}
+		});
 	}
 
 	private String imgUrl(Element element) {

@@ -175,7 +175,7 @@ public class WXArticleContentHandler extends Handler<WXArticleContent> {
 					int ind = thumbnails.size() / 2;
 					thumb = thumbnails.get(ind);
 				}
-				long id = task.syncPostBlog(ac.getTitle(), ac.getSource(), thumb);
+				long id = task.postBlog(ac.getTitle(), ac.getSource(), thumb);
 				String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 				gitTask.writeGit(id, ac.getTitle(), ac.getSource(), time);
 				gitTask.commitAndPushGit();

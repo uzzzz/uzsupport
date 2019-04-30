@@ -14,6 +14,7 @@ import org.uzzz.bean.WXArticle;
 import org.uzzz.bean.WXArticleContent;
 import org.uzzz.dao.WXArticleContentRepository;
 import org.uzzz.dao.WXArticleRepository;
+import org.uzzz.utils.Utils;
 
 /**
  * <pre>
@@ -82,7 +83,7 @@ public class ProxyHandler extends Handler<ProxyData> {
 			}
 		}
 
-		String msgList = substring(source, "var msgList = '", "'").replace("&quot;", "\"");
+		String msgList = Utils.substring(source, "var msgList = '", "'").replace("&quot;", "\"");
 
 		try {
 			JSONObject json = new JSONObject(msgList);
@@ -372,9 +373,9 @@ public class ProxyHandler extends Handler<ProxyData> {
 		}
 
 		Document doc = Jsoup.parse(source);
-		String title = substring(source, "var msg_title = \"", "\";");
-		String description = substring(source, "var msg_desc = \"", "\";");
-		String datetimeStr = substring(source, "var ct = \"", "\";");
+		String title = Utils.substring(source, "var msg_title = \"", "\";");
+		String description = Utils.substring(source, "var msg_desc = \"", "\";");
+		String datetimeStr = Utils.substring(source, "var ct = \"", "\";");
 		long datetime = Long.parseLong(datetimeStr) * 1000;
 		String author = "";
 		Elements ems = doc.select("span.rich_media_meta_text");

@@ -51,8 +51,7 @@ public class AsyncTask {
 		r.run();
 	}
 
-	// @Async
-	public long postBlog(int cid, String title, String c, String thumbnail) {
+	public long postBlog(int cid, String title, String c, String thumbnail, String tags) {
 		try {
 			if (semblanceJob.similar(title, c)) {
 				return 0;
@@ -72,6 +71,7 @@ public class AsyncTask {
 			params.add("title", title);
 			params.add("content", c);
 			params.add("thumbnail", thumbnail);
+			params.add("tags", tags);
 			HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, h);
 			// 执行HTTP请求
 			long id = rest.postForObject("https://uzshare.com/api/post", entity, Long.class);
@@ -89,8 +89,16 @@ public class AsyncTask {
 		return 0;
 	}
 
-	public long syncPostBlog(String title, String c, String thumbnail) {
+	public long postBlog(int cid, String title, String c, String thumbnail) {
+		return postBlog(cid, title, c, thumbnail, "");
+	}
+
+	public long postBlog(String title, String c, String thumbnail) {
 		return postBlog(1, title, c, thumbnail);
+	}
+
+	public long postBlog(String title, String c, String thumbnail, String tags) {
+		return postBlog(1, title, c, thumbnail, tags);
 	}
 
 	private void postBaidu(long id) {
