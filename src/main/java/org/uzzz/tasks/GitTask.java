@@ -41,6 +41,12 @@ public class GitTask {
 				+ "---\n\n" //
 				+ c;
 
+		// writeGitForUzzz(id, title, content, time);
+		writeGitForUzzzOrg(id, title, content, time);
+	}
+
+	private void writeGitForUzzz(long id, String title, String content, String time) {
+
 		try { // write ibz.bz
 			String path = uzzzPath + "/_posts/";
 			BufferedWriter writer = new BufferedWriter(
@@ -51,6 +57,9 @@ public class GitTask {
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 		}
+	}
+
+	private void writeGitForUzzzOrg(long id, String title, String content, String time) {
 
 		try { // write uzzz.org
 			String path = uzzzOrgPath + "/_posts/";
@@ -65,7 +74,7 @@ public class GitTask {
 	}
 
 	public void commitAndPushGit() {
-		commitAndPushGitForUzzz();
+		// commitAndPushGitForUzzz();
 		// commitAndPushGitForUzzzOrg();
 	}
 

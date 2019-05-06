@@ -169,7 +169,7 @@ public class WXArticleContentHandler extends Handler<WXArticleContent> {
 		wxACRepository.save(ac);
 
 		try {
-			if (send2blog) { // post uzzzblog
+			if (send2blog || true /* 暂时忽略send2blog的值 */ ) { // post uzzzblog
 				String thumb = "";
 				if (thumbnails.size() > 0) {
 					int ind = thumbnails.size() / 2;
