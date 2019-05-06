@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.uzzz.bean.User;
-import org.uzzz.crawlers.CsdnCrawler;
 import org.uzzz.dao.UserDao;
 
 @Controller

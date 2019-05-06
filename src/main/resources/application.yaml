@@ -18,8 +18,7 @@ spring.jpa.hibernate.ddl-auto: update
 
 uzshare.static.path: /web/uzshare/static/
 sitemap.sites: uzshare.com
-uzzz.path: /web/uzzzz.github.io
-uzzz.org.path: /web/uzzz.org.github.io
+git.paths: /web/github.io/uzzz.org
 
 hadoop.sort.path: /web/uzsupport/hadoop/sorter.out/
 hadoop.duplicate.path: /web/uzsupport/hadoop/duplicate.out/

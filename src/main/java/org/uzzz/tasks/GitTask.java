@@ -22,11 +22,8 @@ public class GitTask {
 
 	private static Logger log = LoggerFactory.getLogger(GitTask.class);
 
-	@Value("${uzzz.path}")
-	private String uzzzPath;
-
-	@Value("${uzzz.org.path}")
-	private String uzzzOrgPath;
+	@Value("${git.paths}")
+	private String[] gitPaths;
 
 	public void writeGit(long id, String title, String c, String time) {
 		try {
@@ -45,32 +42,21 @@ public class GitTask {
 		writeGitForUzzzOrg(id, title, content, time);
 	}
 
-	private void writeGitForUzzz(long id, String title, String content, String time) {
-
-		try { // write ibz.bz
-			String path = uzzzPath + "/_posts/";
-			BufferedWriter writer = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(path + time + "-" + id + ".html", false), "UTF-8"));
-			writer.write(content);
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage(), e);
-		}
-	}
-
 	private void writeGitForUzzzOrg(long id, String title, String content, String time) {
 
-		try { // write uzzz.org
-			String path = uzzzOrgPath + "/_posts/";
-			BufferedWriter writer = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(path + time + "-" + id + ".html", false), "UTF-8"));
-			writer.write(content);
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage(), e);
+		for (String _path : gitPaths) {
+			try {
+				String path = _path + "/_posts/";
+				BufferedWriter writer = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(path + time + "-" + id + ".html", false), "UTF-8"));
+				writer.write(content);
+				writer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error(e.getMessage(), e);
+			}
 		}
+
 	}
 
 	public void commitAndPushGit() {
@@ -82,7 +68,7 @@ public class GitTask {
 		try {
 			long start = System.currentTimeMillis();
 
-			File dir = new File(uzzzPath);
+			File dir = new File("uzzzPath");
 			String[] cmd = new String[] { "/bin/sh", "-c",
 					"git add . && git commit -a -m \"crawler\" && git pull && git push origin master" };
 			Process process = Runtime.getRuntime().exec(cmd, null, dir);
@@ -120,43 +106,46 @@ public class GitTask {
 	}
 
 	private void commitAndPushGitForUzzzOrg() {
-		try {
-			long start = System.currentTimeMillis();
+		for (String _path : gitPaths) {
+			try {
+				long start = System.currentTimeMillis();
 
-			File dir = new File(uzzzOrgPath);
-			String[] cmd = new String[] { "/bin/sh", "-c",
-					"/usr/local/rvm/gems/ruby-2.4.5/bin/jekyll build --destination docs --incremental && git add . && git commit -a -m \"deploy\" && git pull && git push origin master" };
-			Process process = Runtime.getRuntime().exec(cmd, null, dir);
+				File dir = new File(_path);
+				String[] cmd = new String[] { "/bin/sh", "-c",
+						"/usr/local/rvm/gems/ruby-2.4.5/bin/jekyll build --destination docs --incremental && git add . && git commit -a -m \"deploy\" && git pull && git push origin master" };
+				Process process = Runtime.getRuntime().exec(cmd, null, dir);
 
-			// 记录dos命令的返回信息
-			StringBuffer resStr = new StringBuffer();
-			InputStream in = process.getInputStream();
-			Reader reader = new InputStreamReader(in);
-			BufferedReader bReader = new BufferedReader(reader);
-			for (String res = ""; (res = bReader.readLine()) != null;) {
-				resStr.append(res + "\n");
+				// 记录dos命令的返回信息
+				StringBuffer resStr = new StringBuffer();
+				InputStream in = process.getInputStream();
+				Reader reader = new InputStreamReader(in);
+				BufferedReader bReader = new BufferedReader(reader);
+				for (String res = ""; (res = bReader.readLine()) != null;) {
+					resStr.append(res + "\n");
+				}
+				bReader.close();
+				reader.close();
+
+				// 记录dos命令的返回错误信息
+				StringBuffer errorStr = new StringBuffer();
+				InputStream errorIn = process.getErrorStream();
+				Reader errorReader = new InputStreamReader(errorIn);
+				BufferedReader eReader = new BufferedReader(errorReader);
+				for (String res = ""; (res = eReader.readLine()) != null;) {
+					errorStr.append(res + "\n");
+				}
+				eReader.close();
+				errorReader.close();
+
+				process.getOutputStream().close(); // 不要忘记了一定要关
+
+				long end = System.currentTimeMillis();
+
+				log.error("git OK:" + (end - start) + "ms\nsuccess:" + resStr.toString() + "\nerror:" + errorStr);
+			} catch (IOException ee) {
+				log.error(ee.getMessage());
 			}
-			bReader.close();
-			reader.close();
-
-			// 记录dos命令的返回错误信息
-			StringBuffer errorStr = new StringBuffer();
-			InputStream errorIn = process.getErrorStream();
-			Reader errorReader = new InputStreamReader(errorIn);
-			BufferedReader eReader = new BufferedReader(errorReader);
-			for (String res = ""; (res = eReader.readLine()) != null;) {
-				errorStr.append(res + "\n");
-			}
-			eReader.close();
-			errorReader.close();
-
-			process.getOutputStream().close(); // 不要忘记了一定要关
-
-			long end = System.currentTimeMillis();
-
-			log.error("git OK:" + (end - start) + "ms\nsuccess:" + resStr.toString() + "\nerror:" + errorStr);
-		} catch (IOException ee) {
-			log.error(ee.getMessage());
 		}
+
 	}
 }
