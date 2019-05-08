@@ -51,4 +51,9 @@ public class PostServiceImpl implements PostService {
 	public PostAttribute getPostAttribute(long id) {
 		return postAttributeDao.findOne(id);
 	}
+
+	@Override
+	public boolean existsByTitle(String title) {
+		return postSlaveDao.existsByTitle(title);
+	}
 }

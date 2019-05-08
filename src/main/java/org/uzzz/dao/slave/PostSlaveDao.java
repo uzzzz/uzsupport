@@ -23,5 +23,7 @@ public interface PostSlaveDao extends PostDao {
 
 	@Query("select title from Post")
 	List<String> findAllTitles();
+	
+	boolean existsByTitle(String title);
 
 }

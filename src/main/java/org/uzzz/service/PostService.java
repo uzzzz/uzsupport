@@ -16,4 +16,6 @@ public interface PostService {
 	Post getPost(long id);
 
 	PostAttribute getPostAttribute(long id);
+	
+	boolean existsByTitle(String title);
 }

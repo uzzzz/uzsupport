@@ -14,14 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.uzzz.jobs.semblance.SemblanceTitleJob;
 import org.uzzz.service.PostService;
 
 @Component
 public class AsyncTask {
 
-	@Autowired
-	private SemblanceTitleJob semblanceJob;
+//	@Autowired
+//	private SemblanceTitleJob semblanceJob;
 
 	@Autowired
 	private PostService postService;
@@ -53,7 +52,9 @@ public class AsyncTask {
 
 	public long postBlog(int cid, String title, String c, String thumbnail, String tags) {
 		try {
-			if (semblanceJob.similar(title, c)) {
+
+			if (postService.existsByTitle(title)
+			/* semblanceJob.similar(title, c) */) {
 				return 0;
 			}
 		} catch (Exception e) {
@@ -77,10 +78,10 @@ public class AsyncTask {
 			long id = rest.postForObject("https://uzshare.com/api/post", entity, Long.class);
 			postBaidu(id);
 
-			try {
-				semblanceJob.writePost(id, title, c);
-			} catch (Exception e) {
-			}
+//			try {
+//				semblanceJob.writePost(id, title, c);
+//			} catch (Exception e) {
+//			}
 
 			return id;
 		} catch (Exception e) {
