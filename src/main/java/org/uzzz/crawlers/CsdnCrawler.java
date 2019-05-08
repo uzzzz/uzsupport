@@ -153,10 +153,10 @@ public class CsdnCrawler {
 		return id;
 	}
 
-	public void crawl_search(final String key) throws IOException {
+	public void crawl_search(String key, int start, int end) throws IOException {
 		task.asyncRun(() -> {
 			String urlTemp = "https://so.csdn.net/so/search/s.do?t=blog&q=%s&p=%d";
-			for (int p = 1; p <= 5; p++) {
+			for (int p = start; p <= end; p++) {
 				try {
 					String url = String.format(urlTemp, key, p);
 					Connection conn = Jsoup.connect(url);
