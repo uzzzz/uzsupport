@@ -44,11 +44,16 @@ public class SitemapParser {
 					XPathConstants.NODESET);
 			for (int i = 0; i < sitemapNodes.getLength(); i++) {
 				String sitemapUrl = sitemapNodes.item(i).getTextContent();
-				parseXml(sitemapUrl);
-				if (callback != null) {
+				if (callback == null) {
+					parseXml(sitemapUrl);
+				} else if (callback.ignoreSitemap(sitemapUrl)) {
+					callback.sitemap(sitemapUrl);
+				} else {
+					parseXml(sitemapUrl);
 					callback.sitemap(sitemapUrl);
 				}
 			}
+
 			NodeList urlNodes = (NodeList) xpath.evaluate("/urlset/url/loc", document, XPathConstants.NODESET);
 			for (int i = 0; i < urlNodes.getLength(); i++) {
 				String url = urlNodes.item(i).getTextContent();
