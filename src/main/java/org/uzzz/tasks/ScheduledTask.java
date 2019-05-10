@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.uzzz.crawlers.CsdnCrawler;
+import org.uzzz.crawlers.WoshipmCrawler;
 import org.uzzz.jobs.sort.SortJob;
 import org.uzzz.service.PostService;
 
@@ -35,7 +36,10 @@ public class ScheduledTask {
 	private String[] sitemapSites;
 
 	@Autowired
-	private CsdnCrawler crawler;
+	private CsdnCrawler csdnCrawler;
+
+	@Autowired
+	private WoshipmCrawler woshipmCrawler;
 
 	@Autowired
 	private SortJob jobs;
@@ -46,25 +50,31 @@ public class ScheduledTask {
 	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
-		crawler.blockchain();
+		csdnCrawler.blockchain();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 15, fixedDelay = 1000 * 60 * 60)
 	public void crawl_careerlife() throws IOException {
 		log.warn("crawl careerlife @Scheduled");
-		crawler.careerlife();
+		csdnCrawler.careerlife();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60)
 	public void crawl_ai() throws IOException {
 		log.warn("crawl ai @Scheduled");
-		crawler.ai();
+		csdnCrawler.ai();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 45, fixedDelay = 1000 * 60 * 60)
 	public void crawl_datacloud() throws IOException {
 		log.warn("crawl datacloud @Scheduled");
-		crawler.datacloud();
+		csdnCrawler.datacloud();
+	}
+
+	@Scheduled(initialDelay = 1000 * 60 * 60 * 2, fixedDelay = 1000 * 60 * 60 * 5)
+	public void crawl_woshipm_daily() throws IOException {
+		log.warn("crawl woshipm daily @Scheduled");
+		woshipmCrawler.crawl_daily();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60 * 12)
@@ -114,7 +124,7 @@ public class ScheduledTask {
 		return "OK";
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 40, fixedDelay = 1000 * 60 * 60 * 12)
+	// @Scheduled(initialDelay = 1000 * 60 * 40, fixedDelay = 1000 * 60 * 60 * 12)
 	public void post_sort() {
 		try {
 			jobs.sort();

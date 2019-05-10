@@ -1,7 +1,9 @@
 package org.uzzz.crawlers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +59,35 @@ public class WoshipmCrawler {
 			sp.parseXml("http://www.woshipm.com/sitemap.xml");
 			log.warn("woshipm crawl_all end");
 		});
+	}
+
+	public void crawl_daily() {
+		log.warn("woshipm crawl_daily start");
+		SitemapParser sp = new SitemapParser(new SitemapParserCallback() {
+			@Override
+			public boolean ignoreSitemap(String sitemap) {
+				if (sitemap.startsWith("http://www.woshipm.com/sitemap-pt-post")) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			@Override
+			public void url(String url) {
+				try {
+					WoshipmCrawler.this.url(url);
+				} catch (IOException e) {
+					log.error(e.getMessage(), e);
+				}
+			}
+		});
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		String template = "http://www.woshipm.com/sitemap-pt-post-%s.xml";
+		String sitemapUrl = String.format(template, sdf.format(new Date()));
+		log.warn("woshipm crawl_daily url : " + sitemapUrl);
+		sp.parseXml(sitemapUrl);
+		log.warn("woshipm crawl_daily end");
 	}
 
 	public long url(String url) throws IOException {
