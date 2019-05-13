@@ -34,7 +34,7 @@ public class GitTask {
 		}
 		String content = "---\n" //
 				+ "layout: default\n" //
-				+ "title: " + title + "\n" //
+				+ "title: \"" + title.replace("\\", "\\\\").replace("\"", "\\\"") + "\"\n" //
 				+ "---\n\n" //
 				+ c;
 
