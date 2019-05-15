@@ -19,9 +19,6 @@ import org.uzzz.service.PostService;
 @Component
 public class AsyncTask {
 
-//	@Autowired
-//	private SemblanceTitleJob semblanceJob;
-
 	@Autowired
 	private PostService postService;
 
@@ -52,9 +49,7 @@ public class AsyncTask {
 
 	public long postBlog(int cid, String title, String c, String thumbnail, String tags) {
 		try {
-
-			if (postService.existsByTitle(title)
-			/* semblanceJob.similar(title, c) */) {
+			if (postService.existsByTitle(title)) {
 				return 0;
 			}
 		} catch (Exception e) {
@@ -77,11 +72,6 @@ public class AsyncTask {
 			// 执行HTTP请求
 			long id = rest.postForObject("https://uzshare.com/api/post", entity, Long.class);
 			postBaidu(id);
-
-//			try {
-//				semblanceJob.writePost(id, title, c);
-//			} catch (Exception e) {
-//			}
 
 			return id;
 		} catch (Exception e) {

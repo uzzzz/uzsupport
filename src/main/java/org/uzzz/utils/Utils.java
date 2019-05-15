@@ -16,4 +16,11 @@ public class Utils {
 		return "";
 	}
 
+	public static void tryCatch(Runnable r) {
+		try {
+			r.run();
+		} catch (Exception e) {
+		}
+	}
+
 }
