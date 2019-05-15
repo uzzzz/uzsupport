@@ -26,10 +26,10 @@ public class OschinaController {
 		}
 	}
 
-	@GetMapping("blockchain")
+	@GetMapping("crawl_all")
 	@ResponseBody
-	public String blockchain() throws IOException {
-		crawler.blockchain();
+	public String crawl_all(int cid, String classification, int start, int end) throws IOException {
+		crawler.crawl_all(cid, classification, start, end);
 		return "OK";
 	}
 }

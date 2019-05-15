@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,21 +21,64 @@ import org.uzzz.tasks.AsyncTask;
 @Component
 public class OschinaCrawler {
 
+	private static Log log = LogFactory.getLog(OschinaCrawler.class);
+
 	@Autowired
 	private RefererSlaveDao refererSlaveDao;
 
 	@Autowired
 	private AsyncTask task;
 
-	public void blockchain() throws IOException {
-		// 区块链 页数：1 ~ 63
-		String template = "https://www.oschina.net/blog/widgets/_blog_index_newest_list?classification=5765988&p=%d&type=ajax";
-		for (int i = 1; i <= 63; i++) {
-			String url = String.format(template, i);
+	public void crawl_all(int cid, String classification, int start, int end) throws IOException {
+		// 页数：start ~ end
+		log.error("crawl_all start classification : " + classification);
+		String template = "https://www.oschina.net/blog/widgets/_blog_index_newest_list?classification=%s&p=%d&type=ajax";
+		for (int i = start; i <= end; i++) {
+			String url = String.format(template, classification, i);
 			Document _doc = Jsoup.connect(url).get();
 			_doc.select("a.header").parallelStream().forEach(a -> {
 				String _url = a.attr("href");
-				url(2, _url);
+				url(cid, _url);
+			});
+		}
+		log.error("crawl_all end classification : " + classification);
+	}
+
+	public void blockchain() throws IOException {
+		String url = "https://www.oschina.net/blog/widgets/_blog_index_newest_list?classification=5765988&type=ajax";
+		Document _doc = Jsoup.connect(url).get();
+		_doc.select("a.header").parallelStream().forEach(a -> {
+			String _url = a.attr("href");
+			url(2, _url);
+		});
+	}
+
+	public void ai() throws IOException {
+		String url = "https://www.oschina.net/blog/widgets/_blog_index_newest_list?classification=5611447&type=ajax";
+		Document _doc = Jsoup.connect(url).get();
+		_doc.select("a.header").parallelStream().forEach(a -> {
+			String _url = a.attr("href");
+			url(4, _url);
+		});
+	}
+
+	public void datacloud() throws IOException {
+
+		{ // 大数据
+			String dataurl = "https://www.oschina.net/blog/widgets/_blog_index_newest_list?classification=5593654&type=ajax";
+			Document _doc = Jsoup.connect(dataurl).get();
+			_doc.select("a.header").parallelStream().forEach(a -> {
+				String _url = a.attr("href");
+				url(5, _url);
+			});
+		}
+
+		{ // 云计算
+			String cloudurl = "https://www.oschina.net/blog/widgets/_blog_index_newest_list?classification=428639&type=ajax";
+			Document _doc = Jsoup.connect(cloudurl).get();
+			_doc.select("a.header").parallelStream().forEach(a -> {
+				String _url = a.attr("href");
+				url(5, _url);
 			});
 		}
 	}

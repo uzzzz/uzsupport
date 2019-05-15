@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.uzzz.crawlers.CsdnCrawler;
+import org.uzzz.crawlers.OschinaCrawler;
 import org.uzzz.crawlers.WoshipmCrawler;
 import org.uzzz.jobs.sort.SortJob;
 import org.uzzz.service.PostService;
@@ -42,6 +43,9 @@ public class ScheduledTask {
 	private WoshipmCrawler woshipmCrawler;
 
 	@Autowired
+	private OschinaCrawler oschinaCrawler;
+
+	@Autowired
 	private SortJob jobs;
 
 	@Autowired
@@ -51,6 +55,7 @@ public class ScheduledTask {
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		csdnCrawler.blockchain();
+		oschinaCrawler.blockchain();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 15, fixedDelay = 1000 * 60 * 60)
@@ -63,12 +68,14 @@ public class ScheduledTask {
 	public void crawl_ai() throws IOException {
 		log.warn("crawl ai @Scheduled");
 		csdnCrawler.ai();
+		oschinaCrawler.ai();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 45, fixedDelay = 1000 * 60 * 60)
 	public void crawl_datacloud() throws IOException {
 		log.warn("crawl datacloud @Scheduled");
 		csdnCrawler.datacloud();
+		oschinaCrawler.datacloud();
 	}
 
 	@Scheduled(initialDelay = 1000 * 60 * 60 * 2, fixedDelay = 1000 * 60 * 60 * 5)
