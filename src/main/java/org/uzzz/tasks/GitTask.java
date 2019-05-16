@@ -1,14 +1,8 @@
 package org.uzzz.tasks;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -38,7 +32,6 @@ public class GitTask {
 				+ "---\n\n" //
 				+ c;
 
-		// writeGitForUzzz(id, title, content, time);
 		writeGitForUzzzOrg(id, title, content, time);
 	}
 
@@ -59,93 +52,4 @@ public class GitTask {
 
 	}
 
-	public void commitAndPushGit() {
-		// commitAndPushGitForUzzz();
-		// commitAndPushGitForUzzzOrg();
-	}
-
-	private void commitAndPushGitForUzzz() {
-		try {
-			long start = System.currentTimeMillis();
-
-			File dir = new File("uzzzPath");
-			String[] cmd = new String[] { "/bin/sh", "-c",
-					"git add . && git commit -a -m \"crawler\" && git pull && git push origin master" };
-			Process process = Runtime.getRuntime().exec(cmd, null, dir);
-
-			// 记录dos命令的返回信息
-			StringBuffer resStr = new StringBuffer();
-			InputStream in = process.getInputStream();
-			Reader reader = new InputStreamReader(in);
-			BufferedReader bReader = new BufferedReader(reader);
-			for (String res = ""; (res = bReader.readLine()) != null;) {
-				resStr.append(res + "\n");
-			}
-			bReader.close();
-			reader.close();
-
-			// 记录dos命令的返回错误信息
-			StringBuffer errorStr = new StringBuffer();
-			InputStream errorIn = process.getErrorStream();
-			Reader errorReader = new InputStreamReader(errorIn);
-			BufferedReader eReader = new BufferedReader(errorReader);
-			for (String res = ""; (res = eReader.readLine()) != null;) {
-				errorStr.append(res + "\n");
-			}
-			eReader.close();
-			errorReader.close();
-
-			process.getOutputStream().close(); // 不要忘记了一定要关
-
-			long end = System.currentTimeMillis();
-
-			log.error("git OK:" + (end - start) + "ms\nsuccess:" + resStr.toString() + "\nerror:" + errorStr);
-		} catch (IOException ee) {
-			log.error(ee.getMessage() + "\n");
-		}
-	}
-
-	private void commitAndPushGitForUzzzOrg() {
-		for (String _path : gitPaths) {
-			try {
-				long start = System.currentTimeMillis();
-
-				File dir = new File(_path);
-				String[] cmd = new String[] { "/bin/sh", "-c",
-						"/usr/local/rvm/gems/ruby-2.4.5/bin/jekyll build --destination docs --incremental && git add . && git commit -a -m \"deploy\" && git pull && git push origin master" };
-				Process process = Runtime.getRuntime().exec(cmd, null, dir);
-
-				// 记录dos命令的返回信息
-				StringBuffer resStr = new StringBuffer();
-				InputStream in = process.getInputStream();
-				Reader reader = new InputStreamReader(in);
-				BufferedReader bReader = new BufferedReader(reader);
-				for (String res = ""; (res = bReader.readLine()) != null;) {
-					resStr.append(res + "\n");
-				}
-				bReader.close();
-				reader.close();
-
-				// 记录dos命令的返回错误信息
-				StringBuffer errorStr = new StringBuffer();
-				InputStream errorIn = process.getErrorStream();
-				Reader errorReader = new InputStreamReader(errorIn);
-				BufferedReader eReader = new BufferedReader(errorReader);
-				for (String res = ""; (res = eReader.readLine()) != null;) {
-					errorStr.append(res + "\n");
-				}
-				eReader.close();
-				errorReader.close();
-
-				process.getOutputStream().close(); // 不要忘记了一定要关
-
-				long end = System.currentTimeMillis();
-
-				log.error("git OK:" + (end - start) + "ms\nsuccess:" + resStr.toString() + "\nerror:" + errorStr);
-			} catch (IOException ee) {
-				log.error(ee.getMessage());
-			}
-		}
-
-	}
 }

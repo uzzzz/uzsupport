@@ -34,7 +34,6 @@ public class GitController {
 		String time = new SimpleDateFormat("yyyy-MM-dd").format(p.getCreated());
 		String c = postAttributeSlaveDao.findOne(id).getContent();
 		gitTask.writeGit(id, title, c, time);
-		gitTask.commitAndPushGit();
 		return "OK";
 	}
 }

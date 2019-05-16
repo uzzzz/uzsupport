@@ -116,9 +116,6 @@ public class CsdnCrawler {
 			} catch (IOException ioe) {
 			}
 		}
-
-		gitTask.commitAndPushGit();
-
 	}
 
 	public long url(String url) throws IOException {
@@ -146,7 +143,6 @@ public class CsdnCrawler {
 			id = task.postBlog(title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "", tags);
 			if (id > 0) {
 				gitTask.writeGit(id, title, c, time);
-				gitTask.commitAndPushGit();
 			}
 		} catch (IOException ioe) {
 		}

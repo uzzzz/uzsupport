@@ -1,8 +1,6 @@
 package org.uzzz.handler;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -19,7 +17,6 @@ import org.uzzz.dao.ParserRepository;
 import org.uzzz.dao.WXArticleContentRepository;
 import org.uzzz.handler.parser.IParser.ParserFactory;
 import org.uzzz.tasks.AsyncTask;
-import org.uzzz.tasks.GitTask;
 
 @Component
 public class WXArticleContentHandler extends Handler<WXArticleContent> {
@@ -35,9 +32,6 @@ public class WXArticleContentHandler extends Handler<WXArticleContent> {
 
 	@Autowired
 	private AsyncTask task;
-
-	@Autowired
-	private GitTask gitTask;
 
 	/**
 	 * 获取Body部分，去掉script，level = 1
@@ -175,10 +169,7 @@ public class WXArticleContentHandler extends Handler<WXArticleContent> {
 					int ind = thumbnails.size() / 2;
 					thumb = thumbnails.get(ind);
 				}
-				long id = task.postBlog(ac.getTitle(), ac.getSource(), thumb);
-				String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-				gitTask.writeGit(id, ac.getTitle(), ac.getSource(), time);
-				gitTask.commitAndPushGit();
+				task.postBlog(ac.getTitle(), ac.getSource(), thumb);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
