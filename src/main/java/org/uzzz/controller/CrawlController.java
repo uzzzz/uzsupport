@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.uzzz.crawlers.CsdnCrawler;
 
 @Controller
-@RequestMapping("crawl")
+@RequestMapping("csdn")
 public class CrawlController {
 
 	@Autowired
-	private CsdnCrawler crawler;
+	private CsdnCrawler csdnCrawler;
 
 	@GetMapping("crawl_all")
 	@ResponseBody
 	public String crawl_all() throws IOException {
-		crawler.crawl_all();
+		csdnCrawler.crawl_all();
 		return "OK";
 	}
 
 	@GetMapping("url")
 	public String url(String url) throws IOException {
-		long id = crawler.url(url);
+		long id = csdnCrawler.url(url);
 		if (id == 0) {
 			return "redirect:https://uzshare.com/";
 		} else {
@@ -39,7 +39,7 @@ public class CrawlController {
 	public String search(String key, //
 			@RequestParam(required = false, defaultValue = "1") int start, //
 			@RequestParam(required = false, defaultValue = "5") int end) throws IOException {
-		crawler.crawl_search(key, start, end);
+		csdnCrawler.crawl_search(key, start, end);
 		return "OK";
 	}
 }

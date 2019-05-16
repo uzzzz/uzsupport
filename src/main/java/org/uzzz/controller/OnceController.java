@@ -18,8 +18,8 @@ public class OnceController {
 	@Autowired
 	private UserDao userDao;
 
-	@GetMapping("ava")
-	@ResponseBody
+//	@GetMapping("ava")
+//	@ResponseBody
 	public String ava() throws IOException {
 		List<User> users = userDao.findAll();
 		for (User user : users) {
