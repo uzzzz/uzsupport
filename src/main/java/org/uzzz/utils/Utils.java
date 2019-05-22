@@ -1,5 +1,7 @@
 package org.uzzz.utils;
 
+import java.util.function.Supplier;
+
 public class Utils {
 
 	public static String substring(String content, String prefix, String suffix) {
@@ -21,6 +23,14 @@ public class Utils {
 			r.run();
 		} catch (Exception e) {
 		}
+
 	}
 
+	public static <T> T tryCatch(Supplier<T> supplier) {
+		try {
+			return supplier.get();
+		} catch (Exception e) {
+		}
+		return null;
+	}
 }
