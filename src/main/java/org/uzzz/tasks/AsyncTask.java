@@ -2,6 +2,8 @@ package org.uzzz.tasks;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
@@ -18,6 +20,8 @@ import org.uzzz.service.PostService;
 
 @Component
 public class AsyncTask {
+
+	private static Logger log = LoggerFactory.getLogger(AsyncTask.class);
 
 	@Autowired
 	private PostService postService;
@@ -94,14 +98,14 @@ public class AsyncTask {
 
 	private void postBaidu(long id) {
 		try { // post baidu
-			String postUrl = "http://data.zz.baidu.com/urls?site=https://uzshare.com&token=HpJK9usLd5M83kzx";
+			String postUrl = "http://data.zz.baidu.com/urls?site=uzshare.com&token=zKTbmlwMoK1Mq03A";
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.TEXT_PLAIN);
 			String content = "https://uzshare.com/view/" + id;
 			HttpEntity<String> requestEntity = new HttpEntity<String>(content, headers);
 			// 执行HTTP请求
 			String ret = rest.postForObject(postUrl, requestEntity, String.class);
-			System.out.println("post baidu : " + ret + " (" + content + ")");
+			log.error("post baidu : " + ret + " (" + content + ")");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
