@@ -84,7 +84,8 @@ public class ScheduledTask {
 		woshipmCrawler.crawl_daily();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60 * 12)
+	// 暂时去掉sitemap
+	// @Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
 		String ok = _rewritesitemapxml(sitemapSites);
