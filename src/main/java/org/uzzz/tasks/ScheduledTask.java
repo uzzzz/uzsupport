@@ -78,7 +78,7 @@ public class ScheduledTask {
 		oschinaCrawler.datacloud();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 60 * 2, fixedDelay = 1000 * 60 * 60 * 5)
+	@Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000 * 60 * 60 * 5)
 	public void crawl_woshipm_daily() throws IOException {
 		log.warn("crawl woshipm daily @Scheduled");
 		woshipmCrawler.crawl_daily();
