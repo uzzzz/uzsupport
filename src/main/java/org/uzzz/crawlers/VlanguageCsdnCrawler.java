@@ -26,19 +26,15 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.uzzz.bean.Referer;
 import org.uzzz.dao.slave.RefererSlaveDao;
-import org.uzzz.tasks.AsyncTask;
 import org.uzzz.utils.Utils;
 
 @Component
-public class UzzzCsdnCrawler {
+public class VlanguageCsdnCrawler {
 
-	private static Log log = LogFactory.getLog(UzzzCsdnCrawler.class);
+	private static Log log = LogFactory.getLog(VlanguageCsdnCrawler.class);
 
 	@Autowired
 	private RefererSlaveDao refererSlaveDao;
-
-	@Autowired
-	private AsyncTask task;
 
 	@Autowired
 	private RestTemplate rest;
@@ -62,8 +58,8 @@ public class UzzzCsdnCrawler {
 			article.select("script, #btn-readmore, .article-copyright").remove();
 			String c = article.html();
 
-			// post wp.uzzz.org
-			postWpUzzz(title, c, date, categories, tags);
+			// post to vlanguage.cn
+			postToVlanguage(title, c, date, categories, tags);
 		} catch (IOException ioe) {
 		}
 		return 0;
@@ -124,7 +120,7 @@ public class UzzzCsdnCrawler {
 		return src;
 	}
 
-	public void postWpUzzz(//
+	public void postToVlanguage(//
 			String title, //
 			String c, //
 			String date, //
@@ -161,7 +157,7 @@ public class UzzzCsdnCrawler {
 			HttpEntity<WpPost> entity = new HttpEntity<WpPost>(p, h);
 			// 执行HTTP请求
 			ResponseEntity<String> res = rest.postForEntity( //
-					"https://uzzz.org/wp-json/wp/v2/posts", entity, String.class);
+					"https://vlanguage.cn/wp-json/wp/v2/posts", entity, String.class);
 			log.info(res.getStatusCode());
 			log.info(res.getBody());
 		} catch (HttpClientErrorException e) {
@@ -185,7 +181,7 @@ public class UzzzCsdnCrawler {
 			HttpEntity<WpCategoryTag> entity = new HttpEntity<WpCategoryTag>(wpTag, h);
 			// 执行HTTP请求
 			res = rest.postForObject( //
-					"https://uzzz.org/wp-json/wp/v2/tags", entity, String.class);
+					"https://vlanguage.cn/wp-json/wp/v2/tags", entity, String.class);
 			return new JSONObject(res).optInt("id");
 		} catch (HttpClientErrorException e) {
 			res = e.getResponseBodyAsString();
@@ -214,7 +210,7 @@ public class UzzzCsdnCrawler {
 			HttpEntity<WpCategoryTag> entity = new HttpEntity<WpCategoryTag>(wpCategory, h);
 			// 执行HTTP请求
 			res = rest.postForObject( //
-					"https://uzzz.org/wp-json/wp/v2/categories", entity, String.class);
+					"https://vlanguage.cn/wp-json/wp/v2/categories", entity, String.class);
 			return new JSONObject(res).optInt("id");
 		} catch (HttpClientErrorException e) {
 			res = e.getResponseBodyAsString();
