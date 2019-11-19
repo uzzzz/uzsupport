@@ -43,9 +43,9 @@ public class VlanguageCsdnCrawler {
 		try {
 			Connection _conn = Jsoup.connect(url);
 			_conn.header("Cookie",
-					"TINGYUN_DATA=%7B%22id%22%3A%22-sf2Cni530g%23HL5wvli0FZI%22%2C%22n%22%3A%22WebAction%2FCI%2Farticle%252Fdetails%22%2C%22tid%22%3A%2211b136d6518e7d2%22%2C%22q%22%3A0%2C%22a%22%3A119%7D; c-login-auto=3; dc_tos=q0wduw; Hm_ct_6bcd52f51e9b3dce32bec4a3997715ac=6525*1*10_6645302180-1573629132712-524858; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1573631528; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1573629133; acw_sc__v2=5dcbb625fca1d73689c038ca693194995ec20fd5; acw_sc__v3=5dcbb6260415413f4012c95c831f9cddb7185987; acw_tc=2760821d15736292261247318e3d56ed02de11ee4b7d215a4b665089fc5fc4; announcement=%257B%2522isLogin%2522%253Afalse%252C%2522announcementUrl%2522%253A%2522https%253A%252F%252Fblogdev.blog.csdn.net%252Farticle%252Fdetails%252F102605809%2522%252C%2522announcementCount%2522%253A0%252C%2522announcementExpire%2522%253A3600000%257D; dc_session_id=10_1573629132712.222920; uuid_tt_dd=10_6645302180-1573629132712-524858");
+					"TINGYUN_DATA=%7B%22id%22%3A%22-sf2Cni530g%23HL5wvli0FZI%22%2C%22n%22%3A%22WebAction%2FCI%2FarticleList%252Flist%22%2C%22tid%22%3A%22115c71318e6bc90%22%2C%22q%22%3A0%2C%22a%22%3A67%7D; uuid_tt_dd=10_6645302180-1573627178053-579296; dc_session_id=10_1573627178053.681813; Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1573108037,1573109110,1573118408,1573118605; Hm_ct_6bcd52f51e9b3dce32bec4a3997715ac=6525*1*10_6645302180-1573627178053-579296!1788*1*PC_VC!5744*1*yu_fang1987; ViewMode=list; announcement=%257B%2522isLogin%2522%253Afalse%252C%2522announcementUrl%2522%253A%2522https%253A%252F%252Fblogdev.blog.csdn.net%252Farticle%252Fdetails%252F103053996%2522%252C%2522announcementCount%2522%253A0%252C%2522announcementExpire%2522%253A3600000%257D; SESSION=225e29df-d985-4853-974f-ac7df337b65b; acw_tc=2760827615741292712716837e5d80ad620893a7c3887fcbbe540085e6c889; acw_sc__v2=5dd34e774099fa1e6392660f9d033fe50c0be757; c-login-auto=10; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1574129273; firstDie=1; dc_tos=q171x5");
 			Document _doc = _conn.get();
-//			log.error(_doc.html());
+			log.error(_doc.html());
 			String title = _doc.select(".title-article").text();
 			String date = _doc.select(".article-bar-top .time").text();
 			List<String> categories = _doc.select(".tags-box.space a").eachText();

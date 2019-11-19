@@ -26,7 +26,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.uzzz.bean.Referer;
 import org.uzzz.dao.slave.RefererSlaveDao;
-import org.uzzz.tasks.AsyncTask;
 import org.uzzz.utils.Utils;
 
 @Component
@@ -36,9 +35,6 @@ public class UzzzCsdnCrawler {
 
 	@Autowired
 	private RefererSlaveDao refererSlaveDao;
-
-	@Autowired
-	private AsyncTask task;
 
 	@Autowired
 	private RestTemplate rest;
