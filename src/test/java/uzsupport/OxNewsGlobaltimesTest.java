@@ -20,7 +20,7 @@ public class OxNewsGlobaltimesTest {
 	// http://www.globaltimes.cn/opinion/index.html
 	@Test
 	public void search() throws IOException {
-		String category = "WORLD";
+		String category = "source".toUpperCase();
 		String toLowerCase = category.toLowerCase();
 		for (int i = 1; i <= 10; i++) {
 			String listUrl;

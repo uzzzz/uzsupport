@@ -45,7 +45,7 @@ public class OxNewsGlobaltimesCrawler {
 			Document doc = conn.get();
 			Elements elements = doc.select("#channel-list .row-content");
 			for (Element e : elements) {
-				String article_url = e.select(".span2 a").attr("href");
+				String article_url = e.select(".span10 a").attr("href");
 				url(article_url, category);
 			}
 		} catch (IOException e) {
@@ -61,7 +61,37 @@ public class OxNewsGlobaltimesCrawler {
 			String title = _doc.select(".article-title").text();
 			// text_left = Source:Global Times Published: 2019/11/28 21:23:40
 			String text_left = _doc.select(".article-source .text-left").text();
-			String date = text_left.substring(text_left.indexOf(": ") + 2).replace("/", "-");
+			String date = text_left.substring(text_left.indexOf("Published:") + 10).trim();
+			String[] ds = date.split(" ");
+			String d = ds[0];
+			String t = ds[1];
+			{ // 修正日期
+				date = "";
+				for (String s : d.split("/")) {
+					if (s.length() == 4) {
+						date = s;
+					} else if (s.length() == 1) {
+						date += ("-0" + s);
+					} else {
+						date += ("-" + s);
+					}
+				}
+				date += " ";
+			}
+			{ // 修正时间
+				String[] tt = t.split(":");
+				for (int i = 0; i < tt.length; i++) {
+					if (tt[i].length() == 1) {
+						tt[i] = "0" + tt[i];
+					}
+					if (i == 0) {
+						date += tt[i];
+					} else {
+						date += ":" + tt[i];
+					}
+				}
+			}
+
 			List<String> categories = Arrays.asList(category);
 			List<String> tags = Arrays.asList(_doc.select(".text-muted").text().replace("Posted in:", "").split(","));
 
@@ -145,6 +175,7 @@ public class OxNewsGlobaltimesCrawler {
 			log.info(res.getBody());
 		} catch (HttpClientErrorException e) {
 			log.error(e.getResponseBodyAsString());
+//			log.error("date:" + date);
 			log.error(e);
 			e.printStackTrace();
 		}
