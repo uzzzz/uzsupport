@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -141,6 +142,14 @@ public class DayNewsCrawler {
 				p.setTags(tagList);
 			}
 
+			// 观看数vc/评论数cc/点赞数lc
+			int vc = randInt(1000, 5000);
+			int cc = randInt(20, vc - 900);
+			int lc = randInt(50, vc - 900);
+			p.setComment_count(cc);
+			p.setViews_count(vc);
+			p.setLove_count(lc);
+
 			HttpEntity<WpPost> entity = new HttpEntity<WpPost>(p, h);
 			// 执行HTTP请求
 			ResponseEntity<String> res = rest.postForEntity( //
@@ -245,6 +254,9 @@ public class DayNewsCrawler {
 		private String date;
 		private List<Integer> categories; //
 		private List<Integer> tags;
+		private int comment_count;
+		private int views_count;
+		private int love_count;
 
 		public String getTitle() {
 			return title;
@@ -293,5 +305,34 @@ public class DayNewsCrawler {
 		public void setTags(List<Integer> tags) {
 			this.tags = tags;
 		}
+
+		public int getComment_count() {
+			return comment_count;
+		}
+
+		public void setComment_count(int comment_count) {
+			this.comment_count = comment_count;
+		}
+
+		public int getViews_count() {
+			return views_count;
+		}
+
+		public void setViews_count(int views_count) {
+			this.views_count = views_count;
+		}
+
+		public int getLove_count() {
+			return love_count;
+		}
+
+		public void setLove_count(int love_count) {
+			this.love_count = love_count;
+		}
+
+	}
+
+	private int randInt(int start, int end) {
+		return start + new Random().nextInt(end - start + 1);
 	}
 }
