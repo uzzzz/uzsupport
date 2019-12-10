@@ -12,17 +12,16 @@ import org.uzzz.crawlers.UzzzCsdnCrawler;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SupportApp.class)
-public class PostWpUzzzTest {
+public class PostUzzzTest {
 
 	@Autowired
 	private UzzzCsdnCrawler uzzzCsdnCrawler;
 
 	@Test
-	public void post() {
-		try {
-			uzzzCsdnCrawler.url("https://blog.csdn.net/Applying/article/details/80575616");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void post() throws IOException {
+		String key = "";
+		int start = 1;
+		int end = 5;
+		uzzzCsdnCrawler.csdn_search(key, start, end);
 	}
 }

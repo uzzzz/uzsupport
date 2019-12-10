@@ -22,11 +22,11 @@ public class DayNewsTest {
 	@Test
 	public void search() throws IOException {
 
-		String category = "養生";
-		String slug = "health";
+		String category = "國際";
+		String slug = "international";
 
 		String url = "https://daydaynews.cc/" + slug + "?page=";
-		for (int i = 1; i <= 1; i++) {
+		for (int i = 1; i <= 50; i++) {
 			String listUrl = url + i;
 			crawler.list(listUrl, category, slug);
 		}
