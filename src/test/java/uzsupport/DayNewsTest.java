@@ -1,6 +1,8 @@
 package uzsupport;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,15 +20,24 @@ public class DayNewsTest {
 	private DayNewsCrawler crawler;
 
 	// https://daydaynews.cc/entertainment/
+	@SuppressWarnings("serial")
+	Map<String, String> cateslugs = new HashMap<String, String>() {
+		{
+			put("sports", "體育");
+			put("nba", "NBA");
+		}
+	};
 
 	@Test
 	public void search() throws IOException {
 
-		String category = "國際";
-		String slug = "international";
+		String slug = "nba";
+		int start = 1;
+		int end = 7;
 
+		String category = cateslugs.get(slug);
 		String url = "https://daydaynews.cc/" + slug + "?page=";
-		for (int i = 1; i <= 50; i++) {
+		for (int i = start; i <= end; i++) {
 			String listUrl = url + i;
 			crawler.list(listUrl, category, slug);
 		}
