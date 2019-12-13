@@ -23,17 +23,27 @@ public class DayNewsTest {
 	@SuppressWarnings("serial")
 	Map<String, String> cateslugs = new HashMap<String, String>() {
 		{
+			put("entertainment", "娛樂");
+			put("emotion", "情感");
+			put("international", "國際");
+			put("technology", "科技");
 			put("sports", "體育");
 			put("nba", "NBA");
+			put("premier", "英超");
+			put("history", "歷史");
+			put("game", "遊戲");
+			put("health", "養生");
+			put("lose", "減肥");
+			put("constellation", "星座");
 		}
 	};
 
 	@Test
 	public void search() throws IOException {
 
-		String slug = "nba";
+		String slug = "game";
 		int start = 1;
-		int end = 7;
+		int end = 24;
 
 		String category = cateslugs.get(slug);
 		String url = "https://daydaynews.cc/" + slug + "?page=";

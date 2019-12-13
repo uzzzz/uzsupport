@@ -162,7 +162,10 @@ public class OxNewsGlobaltimesCrawler {
 			if (tags != null) {
 				List<Integer> tagList = new ArrayList<Integer>();
 				for (String t : tags) {
-					tagList.add(tagId(t));
+					try {
+						tagList.add(tagId(t));
+					} catch (Exception e) {
+					}
 				}
 				p.setTags(tagList);
 			}
