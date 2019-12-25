@@ -41,15 +41,14 @@ public class DayNewsTest {
 	@Test
 	public void search() throws IOException {
 
-		String slug = "game";
-		int start = 1;
-		int end = 24;
-
-		String category = cateslugs.get(slug);
-		String url = "https://daydaynews.cc/" + slug + "?page=";
-		for (int i = start; i <= end; i++) {
-			String listUrl = url + i;
-			crawler.list(listUrl, category, slug);
-		}
+		cateslugs.forEach((slug, category) -> {
+			int start = 1;
+			int end = 30;
+			String url = "https://daydaynews.cc/" + slug + "?page=";
+			for (int i = start; i <= end; i++) {
+				String listUrl = url + i;
+				crawler.list(listUrl, category, slug);
+			}
+		});
 	}
 }

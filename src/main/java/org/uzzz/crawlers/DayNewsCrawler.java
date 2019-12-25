@@ -1,6 +1,5 @@
 package org.uzzz.crawlers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +39,7 @@ public class DayNewsCrawler {
 
 	private String host = "daynews.cc";
 
-	public void list(String url, String category, String slug) throws IOException {
+	public void list(String url, String category, String slug) {
 		try {
 			Connection conn = Jsoup.connect(url);
 			Document doc = conn.get();
@@ -49,13 +48,13 @@ public class DayNewsCrawler {
 				String article_url = e.select(".entry-title a").attr("href");
 				url(article_url, category, slug);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage(), e);
 		}
 	}
 
-	private long url(String url, String category, String slug) throws IOException {
+	private void url(String url, String category, String slug) {
 		try {
 			Connection _conn = Jsoup.connect(url);
 			Document _doc = _conn.get();
@@ -75,9 +74,8 @@ public class DayNewsCrawler {
 
 			// post to daynews.cc
 			postToDayNews(title, c, date, categories, slug, tags);
-		} catch (IOException ioe) {
+		} catch (Exception ioe) {
 		}
-		return 0;
 	}
 
 	private String imgUrl(Element element) {
@@ -158,7 +156,6 @@ public class DayNewsCrawler {
 			log.info(res.getBody());
 		} catch (HttpClientErrorException e) {
 			log.error(e.getResponseBodyAsString());
-//			log.error("date:" + date);
 			log.error(e);
 			e.printStackTrace();
 		}
