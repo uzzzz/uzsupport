@@ -6,11 +6,11 @@ spring:
   datasource:
     master:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://106.13.90.116:3306/uzblog?useSSL=false&characterEncoding=utf8
+      url: jdbc:mysql://127.0.0.1:3306/uzblog?useSSL=false&characterEncoding=utf8
       username: root
       password: Abc1234567!
     slave:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://106.13.90.116:3306/uzblog?useSSL=false&characterEncoding=utf8
+      url: jdbc:mysql://127.0.0.1:3306/uzblog?useSSL=false&characterEncoding=utf8
       username: root
       password: Abc1234567!
