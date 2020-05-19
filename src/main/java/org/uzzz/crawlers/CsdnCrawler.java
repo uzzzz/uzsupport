@@ -104,7 +104,7 @@ public class CsdnCrawler {
 					String src = imgUrl(element);
 					thumbnails.add(src);
 				});
-				article.select("script, #btn-readmore, .article-copyright").remove();
+				article.select("script, #btn-readmore, .article-copyright, .person-messagebox").remove();
 				String c = article.html();
 
 				// post uzshare
@@ -134,7 +134,7 @@ public class CsdnCrawler {
 				String src = imgUrl(element);
 				thumbnails.add(src);
 			});
-			article.select("script, #btn-readmore, .article-copyright").remove();
+			article.select("script, #btn-readmore, .article-copyright, .person-messagebox").remove();
 			String c = article.html();
 
 			// post uzshare
