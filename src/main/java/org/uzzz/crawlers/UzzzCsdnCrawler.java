@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.uzzz.bean.Referer;
 import org.uzzz.dao.slave.RefererSlaveDao;
@@ -47,7 +48,7 @@ public class UzzzCsdnCrawler {
 			Document _doc = _conn.get();
 //			log.error(_doc.html());
 			String title = _doc.select(".title-article").text();
-			String date = _doc.select(".article-bar-top .time").text();
+			String date = _doc.select(".article-bar-top .time").text().substring(5);
 			List<String> categories = _doc.select(".tags-box.space a").eachText();
 			List<String> tags = _doc.select(".tags-box.artic-tag-box a").eachText();
 
@@ -60,7 +61,7 @@ public class UzzzCsdnCrawler {
 
 			// post wp.uzzz.org
 			postWpUzzz(title, c, date, categories, tags);
-		} catch (IOException ioe) {
+		} catch (Exception ioe) {
 		}
 		return 0;
 	}
@@ -161,6 +162,10 @@ public class UzzzCsdnCrawler {
 			log.info(res.getStatusCode());
 			log.info(res.getBody());
 		} catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+			log.error(e);
+			e.printStackTrace();
+		} catch (HttpServerErrorException e) {
 			log.error(e.getResponseBodyAsString());
 			log.error(e);
 			e.printStackTrace();

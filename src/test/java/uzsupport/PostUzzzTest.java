@@ -19,9 +19,9 @@ public class PostUzzzTest {
 
 	@Test
 	public void post() throws IOException {
-		String key = "";
+		String key = "tor";
 		int start = 1;
-		int end = 5;
+		int end = 15;
 		uzzzCsdnCrawler.csdn_search(key, start, end);
 	}
 }
