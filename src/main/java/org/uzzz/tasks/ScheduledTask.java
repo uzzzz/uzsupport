@@ -52,6 +52,12 @@ public class ScheduledTask {
 	private PostService postService;
 
 	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
+	public void crawl_5g() throws IOException {
+		log.warn("crawl 5g @Scheduled");
+		csdnCrawler._5g();
+	}
+	
+	@Scheduled(initialDelay = 1000 * 60, fixedDelay = 1000 * 60 * 60)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		csdnCrawler.blockchain();

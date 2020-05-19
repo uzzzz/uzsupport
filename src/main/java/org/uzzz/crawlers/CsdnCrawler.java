@@ -38,6 +38,7 @@ public class CsdnCrawler {
 				careerlife();
 				ai();
 				datacloud();
+				_5g();
 			} catch (IOException e) {
 				e.printStackTrace();
 				log.error(e.getMessage(), e);
@@ -68,6 +69,12 @@ public class CsdnCrawler {
 		// 云计算/大数据
 		String url = "https://www.csdn.net/nav/cloud";
 		crawl(5, url);
+	}
+	
+	public void _5g() throws IOException {
+		// 人工智能
+		String url = "https://www.csdn.net/nav/5g";
+		crawl(13, url);
 	}
 
 	private void crawl_multiple(int cid, String... urls) throws IOException {
