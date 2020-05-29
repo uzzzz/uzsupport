@@ -52,19 +52,25 @@ public class ScheduledTask {
 	private PostService postService;
 
 	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
+	public void crawl_python() throws IOException {
+		log.warn("crawl python @Scheduled");
+		csdnCrawler.python();
+	}
+
+	@Scheduled(initialDelay = 1000 * 60, fixedDelay = 1000 * 60 * 60)
 	public void crawl_5g() throws IOException {
 		log.warn("crawl 5g @Scheduled");
 		csdnCrawler._5g();
 	}
 	
-	@Scheduled(initialDelay = 1000 * 60, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 10, fixedDelay = 1000 * 60 * 60)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		csdnCrawler.blockchain();
 		oschinaCrawler.blockchain();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 15, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 20, fixedDelay = 1000 * 60 * 60)
 	public void crawl_careerlife() throws IOException {
 		log.warn("crawl careerlife @Scheduled");
 		csdnCrawler.careerlife();
@@ -77,7 +83,7 @@ public class ScheduledTask {
 		oschinaCrawler.ai();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 45, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 40, fixedDelay = 1000 * 60 * 60)
 	public void crawl_datacloud() throws IOException {
 		log.warn("crawl datacloud @Scheduled");
 		csdnCrawler.datacloud();

@@ -39,6 +39,7 @@ public class CsdnCrawler {
 				ai();
 				datacloud();
 				_5g();
+				python();
 			} catch (IOException e) {
 				e.printStackTrace();
 				log.error(e.getMessage(), e);
@@ -72,9 +73,15 @@ public class CsdnCrawler {
 	}
 	
 	public void _5g() throws IOException {
-		// 人工智能
+		// 5G
 		String url = "https://www.csdn.net/nav/5g";
 		crawl(13, url);
+	}
+
+	public void python() throws IOException {
+		// Python
+		String url = "https://blog.csdn.net/nav/python";
+		crawl(14, url);
 	}
 
 	private void crawl_multiple(int cid, String... urls) throws IOException {
