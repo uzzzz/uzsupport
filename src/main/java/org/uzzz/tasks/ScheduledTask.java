@@ -63,7 +63,7 @@ public class ScheduledTask {
 		csdnCrawler._5g();
 	}
 	
-	@Scheduled(initialDelay = 1000 * 60 * 10, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 2, fixedDelay = 1000 * 60 * 60)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		csdnCrawler.blockchain();

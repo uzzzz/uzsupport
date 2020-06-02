@@ -92,12 +92,15 @@ public class OschinaCrawler {
 			String title = titleE.text();
 			Elements article = _doc.select("#articleContent");
 			String tags = _doc.select("div.tags a").stream().map(e -> e.text()).collect(Collectors.joining(","));
+
+			article.select("script, div.ad-wrap, a[data-traceid]").remove();
+
 			List<String> thumbnails = new ArrayList<>();
 			article.select("img").stream().parallel().forEach(element -> {
 				String src = imgUrl(element);
 				thumbnails.add(src);
 			});
-			article.select("script, div.ad-wrap").remove();
+
 			String c = article.html();
 			// post uzshare
 			id = task.postBlog(cid, title, c, thumbnails.size() > 0 ? thumbnails.get(0) : "", tags);
