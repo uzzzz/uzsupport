@@ -30,6 +30,9 @@ public class CsdnCrawler {
 	@Autowired
 	private AsyncTask task;
 
+	@Autowired
+	private GithubFileUploader githubFileUploader;
+
 	public void crawl_all() {
 		task.asyncRun(() -> {
 			log.warn("crawl_all");
@@ -186,27 +189,29 @@ public class CsdnCrawler {
 	}
 
 	private String imgUrl(Element element) {
-
 		String src = element.absUrl("src");
-
 		if (StringUtils.isNotBlank(src)) {
-			List<Referer> referers = refererSlaveDao.findAll();
-			boolean b = false;
-			for (Referer r : referers) {
-				String host = r.getHost();
-				if (src.startsWith("http://" + host) //
-						|| src.startsWith("https://" + host)) {
-					b = true;
-					break;
+			try {
+				src = githubFileUploader.upload(src);
+				element.attr("src", src);
+			} catch (IOException e) {
+				e.printStackTrace();
+				List<Referer> referers = refererSlaveDao.findAll();
+				boolean b = false;
+				for (Referer r : referers) {
+					String host = r.getHost();
+					if (src.startsWith("http://" + host) //
+							|| src.startsWith("https://" + host)) {
+						b = true;
+						break;
+					}
+				}
+				if (b) {
+					src = "https://uzshare.com/_p?" + src;
+					element.attr("src", src);
 				}
 			}
-			if (b) {
-				src = "https://uzshare.com/_p?" + src;
-				element.attr("src", src);
-			}
 		}
-
 		return src;
 	}
-
 }

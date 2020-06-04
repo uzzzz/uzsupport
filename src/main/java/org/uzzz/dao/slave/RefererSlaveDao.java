@@ -5,4 +5,6 @@ import org.uzzz.bean.Referer;
 
 public interface RefererSlaveDao extends JpaRepository<Referer, Long> {
 
+    Referer findByHost(String host);
+
 }
