@@ -52,52 +52,58 @@ public class ScheduledTask {
 	private PostService postService;
 
 	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
+	public void crawl_iot() throws IOException {
+		log.warn("crawl iot @Scheduled");
+		csdnCrawler.iot();
+	}
+
+	@Scheduled(initialDelay = 1000 * 60 * 8, fixedDelay = 1000 * 60 * 60)
 	public void crawl_python() throws IOException {
 		log.warn("crawl python @Scheduled");
 		csdnCrawler.python();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 16, fixedDelay = 1000 * 60 * 60)
 	public void crawl_5g() throws IOException {
 		log.warn("crawl 5g @Scheduled");
 		csdnCrawler._5g();
 	}
 	
-	@Scheduled(initialDelay = 1000 * 2, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 24, fixedDelay = 1000 * 60 * 60)
 	public void crawl_blockchain() throws IOException {
 		log.warn("crawl blockchain @Scheduled");
 		csdnCrawler.blockchain();
 		oschinaCrawler.blockchain();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 20, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 32, fixedDelay = 1000 * 60 * 60)
 	public void crawl_careerlife() throws IOException {
 		log.warn("crawl careerlife @Scheduled");
 		csdnCrawler.careerlife();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 40, fixedDelay = 1000 * 60 * 60)
 	public void crawl_ai() throws IOException {
 		log.warn("crawl ai @Scheduled");
 		csdnCrawler.ai();
 		oschinaCrawler.ai();
 	}
 
-	@Scheduled(initialDelay = 1000 * 60 * 40, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 48, fixedDelay = 1000 * 60 * 60)
 	public void crawl_datacloud() throws IOException {
 		log.warn("crawl datacloud @Scheduled");
 		csdnCrawler.datacloud();
 		oschinaCrawler.datacloud();
 	}
 
-	@Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000 * 60 * 60 * 5)
+	@Scheduled(initialDelay = 1000 * 60 * 56, fixedDelay = 1000 * 60 * 60 * 5)
 	public void crawl_woshipm_daily() throws IOException {
 		log.warn("crawl woshipm daily @Scheduled");
 		woshipmCrawler.crawl_daily();
 	}
 
-	// 暂时去掉sitemap
-	// @Scheduled(initialDelay = 1000 * 60 * 30, fixedDelay = 1000 * 60 * 60 * 12)
+	// sitemap
+	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 12)
 	public void rewritesitemapxml() throws IOException {
 		log.warn("rewritesitemapxml start");
 		String ok = _rewritesitemapxml(sitemapSites);

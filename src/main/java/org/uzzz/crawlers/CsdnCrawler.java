@@ -43,6 +43,7 @@ public class CsdnCrawler {
 				datacloud();
 				_5g();
 				python();
+				iot();
 			} catch (IOException e) {
 				e.printStackTrace();
 				log.error(e.getMessage(), e);
@@ -85,6 +86,12 @@ public class CsdnCrawler {
 		// Python
 		String url = "https://blog.csdn.net/nav/python";
 		crawl(14, url);
+	}
+
+	public void iot() throws IOException {
+		// IoT
+		String url = "https://blog.csdn.net/nav/iot";
+		crawl(15, url);
 	}
 
 	private void crawl_multiple(int cid, String... urls) throws IOException {
@@ -194,7 +201,7 @@ public class CsdnCrawler {
 			try {
 				src = githubFileUploader.upload(src);
 				element.attr("src", src);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				List<Referer> referers = refererSlaveDao.findAll();
 				boolean b = false;
