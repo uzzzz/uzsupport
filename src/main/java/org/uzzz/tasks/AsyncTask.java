@@ -77,6 +77,11 @@ public class AsyncTask {
 			long id = rest.postForObject("https://uzshare.com/api/post", entity, Long.class);
 			postBaidu(id);
 
+			try{
+				rest.postForObject("https://uzzz.org/api/post", entity, Long.class);
+			}catch (Exception e) {
+			}
+
 			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
