@@ -16,7 +16,7 @@ spring.redis.password:
 
 spring.jpa.hibernate.ddl-auto: update
 
-uzshare.static.path: /web/uzshare/static/
+uzshare.static.path: /data/web/uzshare/static/
 sitemap.sites: uzshare.com
 
 hadoop.sort.path: /web/uzsupport/hadoop/sorter.out/
