@@ -14,7 +14,7 @@ import org.uzzz.crawlers.DayNewsCrawler;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SupportApp.class)
-public class DayNewsTest {
+public class RecordDataSql {
 
 	@Autowired
 	private DayNewsCrawler crawler;
