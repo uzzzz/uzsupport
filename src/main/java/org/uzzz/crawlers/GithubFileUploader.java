@@ -49,7 +49,7 @@ public class GithubFileUploader {
             String content =  Base64.getEncoder().encodeToString(bytes);
             String filename = DigestUtils.md5DigestAsHex(imageOriginUrl.getBytes()) + System.currentTimeMillis() + ".png";
             String path = host + "/" + filename;
-            String token = "c58b833a3c591b66ccb4319899c1ae328394c56b";
+            String token = "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";
             // 用户名、库名、路径
             String url = "https://api.github.com/repos/xxcode/img.ibz.bz/contents/docs/" + path ;
             GithubFileObject githubFileObject = createGithubFileObject(imageOriginUrl, content, "GithubFileUploader", "GithubFileUploader@local.mbp");

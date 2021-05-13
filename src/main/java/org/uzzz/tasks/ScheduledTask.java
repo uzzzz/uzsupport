@@ -51,7 +51,13 @@ public class ScheduledTask {
 	@Autowired
 	private PostService postService;
 
-	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 5)
+	public void crawl_woshipm_daily() throws IOException {
+		log.warn("crawl woshipm daily @Scheduled");
+		woshipmCrawler.crawl_daily();
+	}
+
+	@Scheduled(initialDelay = 1000 * 60 * 56, fixedDelay = 1000 * 60 * 60)
 	public void crawl_iot() throws IOException {
 		log.warn("crawl iot @Scheduled");
 		csdnCrawler.iot();
@@ -94,12 +100,6 @@ public class ScheduledTask {
 		log.warn("crawl datacloud @Scheduled");
 		csdnCrawler.datacloud();
 		oschinaCrawler.datacloud();
-	}
-
-	@Scheduled(initialDelay = 1000 * 60 * 56, fixedDelay = 1000 * 60 * 60 * 5)
-	public void crawl_woshipm_daily() throws IOException {
-		log.warn("crawl woshipm daily @Scheduled");
-		woshipmCrawler.crawl_daily();
 	}
 
 	// sitemap

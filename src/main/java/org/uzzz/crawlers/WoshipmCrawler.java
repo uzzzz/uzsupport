@@ -93,7 +93,7 @@ public class WoshipmCrawler {
 	public long url(String url) throws IOException {
 		long id = 0;
 		Document _doc = Jsoup.connect(url).get();
-		String title = _doc.select(".article-title").text();
+		String title = _doc.select(".article--title").text();
 		String tags = _doc.select(".taglist a").stream().map(e -> e.text()).collect(Collectors.joining(","));
 		Elements article = _doc.select("div.grap");
 
