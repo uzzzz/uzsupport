@@ -8,9 +8,9 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://127.0.0.1:3306/uzblog?useSSL=false&characterEncoding=utf8
       username: root
-      password: MLH!fjl@2021$
+      password: MLH!mysql@2021#
     slave:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://127.0.0.1:3306/uzblog?useSSL=false&characterEncoding=utf8
       username: root
-      password: MLH!fjl@2021$
+      password: MLH!mysql@2021#
